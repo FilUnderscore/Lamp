@@ -3,9 +3,9 @@ all: BOOTLOADER # Also add kernel for building.
 BOOTLOADER: BOOT_STAGE_1 BOOT_STAGE_2
 	@echo "\nBeginning assembly of the bootloader.\n"
 
-	dd if=/dev/zero of="bootloader/bin/boot.iso" bs=512 count=2 # Count determines amount of 512b sectors.
-	dd if="bootloader/bin/boots1.bin" of="bootloader/bin/boot.iso" seek=0 count=1 conv=notrunc
-	dd if="bootloader/bin/boots2.bin" of="bootloader/bin/boot.iso" seek=1 count=1 conv=notrunc
+	dd if=/dev/zero of="bootloader/bin/boot.iso" bs=1024 count=720 # Count determines amount of 512b sectors.
+	dd if="bootloader/bin/boots1.bin" of="bootloader/bin/boot.iso" seek=0 conv=notrunc
+	dd if="bootloader/bin/boots2.bin" of="bootloader/bin/boot.iso" bs=512 seek=1 conv=notrunc
 
 	@echo "\nAssembly of boot image file complete. Can be found in bin directory.\n"
 

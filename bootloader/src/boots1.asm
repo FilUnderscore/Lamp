@@ -116,23 +116,29 @@ loader:
 	mov sp, 0x7C00
 	sti
 
+	cld
+
 	mov [bootdisk], dl
 
+	;
+	; Start new screen
+	;
+	
 	call ClearScreen
 
 	push 0x0000
 	call MoveCursor
+	
+	;
+	; End new screen
+	;
 
 	mov si, msg
-	call PrintStr
+	call PrintString
 	call PrintLine
 
-	;xor ax, ax
-	;int 0x12
-
-	;call reset_hard_disk_drive
-
-	;call read_hard_disk_drive
+	xor ax, ax 			; Return conventional memory size
+	int 0x12
 
 	call load_sector_2
 
@@ -155,35 +161,31 @@ loader:
 
 boot_second_stage_msg db "Booting into second stage.", 0
 
-error_floppy_drive_msg db "An error occurred while attempting to boot from the floppy disk.", 0
-
-error_hard_disk_drive_msg db "An error occurred while attempting to boot from the hard disk.", 0
+error_drive_msg db "An error occurred while booting...", 0
 
 load_sector_2:
-
-	mov al, 0x01		; load sector 1
-	mov bx, 0x7E00		; destination
-	mov cx, 0x0002		; cylinder 0, sector 2
-	mov dl, 0x80		; Boot Drive
-	mov dh, 0x0
-	mov es, bx
-	mov bx, 0x0
-
-	xor dh, dh			; Head 0
-
 	call read_sectors
 	jnc .success
 	
-	mov si, error_hard_disk_drive_msg
-	call PrintStr
+	mov si, error_drive_msg
+	call PrintString
 
-	mov dx, ax
+	mov dl, ah
 	call PrintHex
 
-	jmp halt
+	retn
+
 .success:
 		mov si, boot_second_stage_msg
-		call PrintStr
+		call PrintString
+
+		; TODO: Jump to memory address of second stage.
+
+		; Address '0x07E0' throws error, apparently doesn't exist
+		;jmp 0x07E0:0x00
+
+		; Address '0x1000' doesn't throw an error.
+		jmp 0x1000:0x0
 
 halt:
 	cli
@@ -195,11 +197,43 @@ read_sectors:
 	mov si, 0x02	; max attempts - 1
 .top:
 	mov ah, 0x02	; read sectors into memory (int 0x13, ah = 0x02)
+	
+	;Working
+	;mov ax, ds
+	;mov es, ax
+	;mov bx, 0x7E00
+
+	; '0x1000' destination of data load
+	mov ax, 0x1000
+	mov es, ax
+	xor bx, bx
+
+	mov al, 0x01		; load sector 1
+	
+	mov ch, 1
+	mov cl, 2
+
+	;mov bx, 0x7E00		; destination
+	
+	;Working
+	;mov cx, 0x0002		; cylinder 0, sector 2
+	
+	mov dl, [bootdisk]	; Boot Drive
+	mov dh, 0x00		; Head 0
+	;mov es, bx
+	;mov bx, 0x00
+
+	;xor dh, dh			; Head 0
+
 	int 0x13
 	jnc .end		; exit if read succeeded
+
 	dec si			; decrement remaining attempts
 	jc .end			; exit if maximum attempts exceeded
+
 	xor ah, ah		; reset disk system (inx 0x13, ah = 0x00)
+	mov ah, 0x00
+
 	int 0x13		
 	jnc .top		; retry if reset succeeded, otherwise exit
 .end:
@@ -273,47 +307,6 @@ read_sectors:
 ; Drive Number 7 usually represents a hard disk drive.
 ;
 
-read_floppy_drive:
-	mov ah, 0x02 ; function 0x02 (2)
-	mov al, 1 ; read 1 sector
-	mov ch, 1 ; reading the second sector past, so still on track 1
-	mov cl, 2 ; sector to read (second sector)
-	mov dh, 0 ; head number
-	mov dl, 0 ; drive number (drive 0 is the floppy drive)
-	int 0x13 ; call BIOS interrupt - Read the sector
-	jc read_floppy_drive
-
-	mov si, boot_second_stage_msg
-	call PrintString
-
-	jmp 0x1000:0x0 ; Jump to execute the sector.
-				   ;
-				   ; If there is a problem reading the sectors
-				   ; and attempts to jump to it to execute it are made,
-				   ; the CPU will execute any instructions located at
-				   ; that address, whether or not the sector was loaded.
-				   ;
-				   ; This means that the CPU will run into either an
-				   ; invalid/unknown instruction, or the end of memory.
-				   ;
-				   ; Both will result in a Triple Fault.
-
-read_hard_disk_drive:
-	mov ah, 0x02
-	mov al, 1
-	mov ch, 1
-	mov cl, 2
-	mov dh, 0
-	mov dl, 7
-	int 0x13
-	jc read_hard_disk_drive
-
-	mov si, boot_second_stage_msg
-	call PrintString
-
-	jmp 0x1000:0x0
-
-
 ; Support LFS
 
 ; Pad the rest of the file with zeros through to byte 510.
@@ -331,3 +324,15 @@ times 510 - ($ - $$)  db 0
 ; Can either be 'dw 0xAA55' or 'db 0x55AA'
 
 dw 0xAA55
+
+; Outdated loading code
+
+;	mov al, 0x01		; load sector 1
+;	mov bx, 0x7E00		; destination
+;	mov cx, 0x0002		; cylinder 0, sector 2
+;	mov dl, [bootdisk]		; Boot Drive
+;	mov dh, 0x0
+;	mov es, bx
+;	mov bx, 0x0
+
+;	xor dh, dh			; Head 0

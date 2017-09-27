@@ -1,11 +1,16 @@
 jmp string_class
 
 PrintLine:
+	pusha
+
 	mov ah, 0x0E       ;print new line sequence
 	mov al, 0x0D
 	int 0x10
 	mov al, 0Ah
 	int 0x10
+
+	popa
+	retn
 
 PrintString:
 	pusha
@@ -102,5 +107,7 @@ MoveCursor:
         ret
 
 HEX_OUT: db '0x0000', 0
+
+continue_key_press_msg db "Press any key to continue...", 0
 
 string_class:
