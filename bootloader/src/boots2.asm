@@ -1,5 +1,17 @@
+;
+; Bootloader Second Stage
+;
+; Called by the first stage, this stage will initialize the third stage,
+; which is a small kernel - which will initialize the 32/64 bit kernel.
+;
+
 BITS 16
 
+;
+; Memory Offset is '0x0' on the current memory address.
+;
+; This is the same as shown in the long jmp function.
+;
 org 0x0
 
 GLOBAL start
