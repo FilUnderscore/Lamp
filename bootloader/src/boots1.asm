@@ -185,7 +185,23 @@ load_sector_2:
 		;jmp 0x07E0:0x00
 
 		; Address '0x1000' doesn't throw an error.
+
+		;	URGENT!!!
+		;
+		;	Make Address '0x1000' jump to Bootloader Stage 2 initialization.
+		; 	Currently doesn't work??? Debug further.
+
 		jmp 0x1000:0x0
+
+		;
+		; Shouldn't reach this section.
+		;
+
+		call PrintLine
+		mov si, error_drive_msg
+		call PrintString
+
+		jmp halt
 
 halt:
 	cli
