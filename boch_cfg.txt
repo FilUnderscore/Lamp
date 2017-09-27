@@ -1,7 +1,0 @@
-megs: 32
-romimage: file=/usr/local/Cellar/bochs/2.6.9_1/share/bochs/BIOS-bochs-latest, address=0xfffe0000
-vgaromimage: file=/usr/local/Cellar/bochs/2.6.9_1/share/bochs/VGABIOS-lgpl-latest
-floppya: 1_44=/Users/filipjerkovic/Desktop/Lamp/bootloader/bin/boot.iso, status=inserted
-boot: a
-log: bochs_output.txt
-mouse: enabled=0
