@@ -179,18 +179,7 @@ load_sector_2:
 		mov si, boot_second_stage_msg
 		call PrintString
 
-		; TODO: Jump to memory address of second stage.
-
-		; Address '0x07E0' throws error, apparently doesn't exist
-		;jmp 0x07E0:0x00
-
-		; Address '0x1000' doesn't throw an error.
-
-		;	URGENT!!!
-		;
-		;	Make Address '0x1000' jump to Bootloader Stage 2 initialization.
-		; 	Currently doesn't work??? Debug further.
-
+		; Jumps to memory location [es:bx] '0x1000:0x0'
 		jmp 0x1000:0x0
 
 		;
@@ -219,9 +208,19 @@ read_sectors:
 	;mov es, ax
 	;mov bx, 0x7E00
 
+	; Never mistake bx for ax. Otherwise the memory of the second sector won't be copied.
+	;
+	; If written as
+	; mov ax, 0x1000
+	; mov es, ax
+	; xor bx, bx
+	;
+	; The code will not be read.
+
 	; '0x1000' destination of data load
-	mov ax, 0x1000
-	mov es, ax
+
+	mov bx, 0x1000
+	mov es, bx
 	xor bx, bx
 
 	mov al, 0x01		; load sector 1
@@ -234,8 +233,11 @@ read_sectors:
 	;Working
 	;mov cx, 0x0002		; cylinder 0, sector 2
 	
+	mov cx, 0x0002
+
 	mov dl, [bootdisk]	; Boot Drive
-	mov dh, 0x00		; Head 0
+	;mov dh, 0x00		; Head 0
+	xor dh, dh
 	;mov es, bx
 	;mov bx, 0x00
 
@@ -248,7 +250,6 @@ read_sectors:
 	jc .end			; exit if maximum attempts exceeded
 
 	xor ah, ah		; reset disk system (inx 0x13, ah = 0x00)
-	mov ah, 0x00
 
 	int 0x13		
 	jnc .top		; retry if reset succeeded, otherwise exit

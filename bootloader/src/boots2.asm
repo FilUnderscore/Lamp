@@ -12,17 +12,18 @@ BITS 16
 ;
 ; This is the same as shown in the long jmp function.
 ;
+
 org 0x0
+
+cli
+push cs
+pop ds
 
 GLOBAL start
 
 jmp start
 
 start:
-	cli
-	push cs
-	pop ds
-
 	jmp boot
 
 %include "bootloader/src/util/string.asm"
