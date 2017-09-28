@@ -27,14 +27,14 @@ jmp start
 start:
 	jmp boot
 
-%include "src/bootloader/util/string.asm"
+%include "src/util/string.asm"
 
 boot:
-	call ClearScreen
+	call clear_screen_16
 
 	; Experimental Message [Temporary]
-	mov si, continue_key_press_msg
-	call PrintString
+	mov si, continue_key_press_msg_16
+	call print_string_16
 
 	cli
 	hlt

@@ -1,6 +1,6 @@
 jmp string_class
 
-PrintLine:
+print_line_16:
 	pusha
 
 	mov ah, 0x0E       ;print new line sequence
@@ -12,7 +12,7 @@ PrintLine:
 	popa
 	retn
 
-PrintString:
+print_string_16:
 	pusha
 	mov ah, 0x0E 	; teletype output (int 0x10, ah = 0x0E)
 	mov bx, 0x0007 	; bh = page number (0), bl = foreground color (light grey)
@@ -26,7 +26,7 @@ PrintString:
 	popa
 	retn
 
-PrintHex:
+print_hex_16:
 	pusha
 	mov cx, 4
 .CharLoop:
@@ -36,7 +36,7 @@ PrintHex:
 	shr dx, 4
 	and ax, 0xF
 
-	mov bx, HEX_OUT
+	mov bx, HEX_OUT_16
 	add bx, 2
 	add bx, cx
 
@@ -52,13 +52,13 @@ PrintHex:
 	je .End
 	jmp .CharLoop
 .End:
-	mov bx, HEX_OUT
-	call PrintStr
+	mov bx, HEX_OUT_16
+	call print_str_16
 
 	popa
 	ret
 
-PrintStr:
+print_str_16:
 	pusha
 .StrLoop:
 	mov al, [bx]
@@ -73,7 +73,7 @@ PrintStr:
 	add bx, 1
 	jmp .StrLoop
 
-ClearScreen:
+clear_screen_16:
         push bp
         mov bp, sp
         pusha
@@ -91,7 +91,7 @@ ClearScreen:
         pop bp
         ret
 
-MoveCursor:
+move_cursor_16:
         push bp
         mov bp, sp
         pusha
@@ -106,8 +106,8 @@ MoveCursor:
         pop bp
         ret
 
-HEX_OUT: db '0x0000', 0
+HEX_OUT_16: db '0x0000', 0
 
-continue_key_press_msg db "Press any key to continue...", 0
+continue_key_press_msg_16 db "Press any key to continue...", 0
 
 string_class:

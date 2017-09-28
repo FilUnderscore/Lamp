@@ -121,13 +121,13 @@ loader:
 	;
 	; Start new screen
 	;
-	call ClearScreen
+	call clear_screen_16
 
 	;
 	; Set Cursor Position to Top-Left of screen, (Column: 0, Row: 0)
 	;
 	push 0x0000
-	call MoveCursor
+	call move_cursor_16
 
 	; Used for Debugging
 	;mov si, msg
@@ -139,6 +139,8 @@ loader:
 
 	; Begins loading of sector 2 (second stage of bootloader)
 	call load_sector_2
+
+%include "src/util/read.asm"
 
 ; 
 ; BIOS Interrupt 13h (INT) Function 0 - Reset Disk Drive
@@ -156,53 +158,13 @@ loader:
 ; if it is set, the operation failed.
 ;
 
-%include "src/bootloader/util/string.asm"
+%include "src/util/string.asm"
 
 boot_second_stage_msg db "Booting into second stage.", 0
 
 error_drive_msg db "An error occurred while booting...", 0
 
 load_sector_2:
-	call read_sectors
-	jnc .success
-	
-	mov si, error_drive_msg
-	call PrintString
-
-	; Print Error Code (hexadecimal)
-	mov dl, ah
-	call PrintHex
-
-	retn
-
-.success:
-		mov si, boot_second_stage_msg
-		call PrintString
-
-		; Jumps to memory location [es:bx] '0x1000:0x0'
-		jmp 0x1000:0x0
-
-		;
-		; Shouldn't reach this section.
-		;
-
-		call PrintLine
-		mov si, error_drive_msg
-		call PrintString
-
-		jmp halt
-
-halt:
-	cli
-	hlt
-	jmp halt
-
-read_sectors:
-	pusha
-	mov si, 0x02	; max attempts - 1
-.top:
-	mov ah, 0x02	; read sectors into memory (int 0x13, ah = 0x02)
-	
 	; Never mistake bx for ax. Otherwise the memory of the second sector won't be copied.
 	;
 	; If written as
@@ -229,19 +191,42 @@ read_sectors:
 
 	xor dh, dh 			; Head 0
 
-	int 0x13
-	jnc .end		; exit if read succeeded
+	; Read sectors (INT 13h / AH = 02h)
+	call read_sectors_16
+	jnc .success 		; Jump if no carry flag.
+	
+	;
+	; If the sectors were failed to be read, an error will be printed to the screen.
+	;
 
-	dec si			; decrement remaining attempts
-	jc .end			; exit if maximum attempts exceeded
+	mov si, error_drive_msg
+	call print_string_16
 
-	xor ah, ah		; reset disk system (inx 0x13, ah = 0x00)
+	; Print Error Code (hexadecimal)
+	mov dl, ah
+	call print_hex_16
 
-	int 0x13		
-	jnc .top		; retry if reset succeeded, otherwise exit
-.end:
-	popa
 	retn
+
+.success:
+		mov si, boot_second_stage_msg
+		call print_string_16
+
+		; Jumps to memory location [es:bx] '0x1000:0x0', where the second stage of the bootloader
+		; is located at.
+		jmp 0x1000:0x0
+
+		;
+		; Shouldn't reach this section.
+		;
+
+		call print_line_16
+		mov si, error_drive_msg
+		call print_string_16
+
+		jmp halt
+
+%include "src/util/halt.asm"
 
 ;
 ; BIOS Interrupt 13h (INT) Function 0x02 - Reading Sectors
