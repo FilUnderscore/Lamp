@@ -51,6 +51,7 @@ boot:
 	mov si, continue_key_press_msg_16
 	call print_string_16
 
+	; Unsure about zeroing AX and resetting DS.
 	xor ax, ax
 	mov ds, ax
 
@@ -74,6 +75,7 @@ boot:
 	; Must be GDT or IDTR
 	call mode_protected_enter
 
+	; Setting up registers for 32-bit access.
 	mov ax, SEG_DS
 	mov ds, ax
 	mov es, ax
@@ -82,9 +84,12 @@ boot:
 	mov ss, ax
 	mov esp, 0x9F000
 
-	jmp dword SEG_CS:0x1000
+	; Jumping to 32bit boot initialization, which prepares the C++ 32/64 bit kernel to load
+	; long mode and initialize 64-bit mode if supported.
+	jmp dword SEG_CS:protected_boot
 
 BITS 32
 protected_boot:
+	hlt
 	
 times 2048 - ($-$$) db 0 ; Fill rest of sector with empty data.
