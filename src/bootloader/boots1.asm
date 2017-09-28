@@ -180,7 +180,7 @@ load_sector_2:
 	mov es, bx
 	xor bx, bx
 
-	mov al, 0x01		; load sector 1
+	mov al, 0x04		; numbers of sectors to read (default: 0x01 - 1 sector)
 	
 	mov ch, 1
 	mov cl, 2
@@ -207,7 +207,6 @@ load_sector_2:
 	call print_hex_16
 
 	retn
-
 .success:
 		mov si, boot_second_stage_msg
 		call print_string_16

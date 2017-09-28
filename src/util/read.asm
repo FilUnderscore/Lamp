@@ -1,3 +1,5 @@
+jmp read_class
+
 read_sectors_16:
 	pusha
 	mov si, 0x02	; max attempts - 1
@@ -17,3 +19,5 @@ read_sectors_16:
 .end:
 	popa
 	retn
+
+read_class:
