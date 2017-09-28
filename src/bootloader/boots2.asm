@@ -37,6 +37,8 @@ start:
 %include "src/util/string.asm"
 %include "src/util/a20.asm"
 %include "src/util/gdt.asm"
+%include "src/util/idt.asm"
+%include "src/util/mode.asm"
 
 boot:
 	; Clear screen
@@ -49,13 +51,40 @@ boot:
 	mov si, continue_key_press_msg_16
 	call print_string_16
 
+	xor ax, ax
+	mov ds, ax
+
+	cli
+
+	call calc_gdt_base
+
+	; Initialize the GDT (Global Descriptor Table)
+	lgdt [gdtr]
+
+	; Initialize the IDT (Interrupt Descriptor Table)
+	lidt [idtr]
+
 	call enable_a20_line_16
 
 	;
 	; If call fails to enable A20 line, system will reboot.
 	;
 
-	; Initialize the GDT (Global Descriptor Table)
-	lgdt [gdt_descriptor]
+	; Triple Fault when attempting to enter Protected Mode
+	; Must be GDT or IDTR
+	call mode_protected_enter
 
+	mov ax, SEG_DS
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+	mov esp, 0x9F000
+
+	jmp dword SEG_CS:0x1000
+
+BITS 32
+protected_boot:
+	
 times 2048 - ($-$$) db 0 ; Fill rest of sector with empty data.
