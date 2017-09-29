@@ -93,8 +93,11 @@ org 0x7C00
 ; Real Mode
 ;
 
+STAGE2_OFFSET equ 0x1000
+
 GLOBAL start
 
+[section .data]
 start:
 	jmp 0x0000:loader
 
@@ -110,7 +113,8 @@ loader:
 	; Set up stack
 	cli
 	mov ss, ax
-	mov sp, 0x7C00
+	mov bp, 0x9000
+	mov sp, bp
 	sti
 
 	; Clear Direction Flag
@@ -176,7 +180,7 @@ load_sector_2:
 
 	; '0x1000' destination of data load
 
-	mov bx, 0x1000
+	mov bx, STAGE2_OFFSET
 	mov es, bx
 	xor bx, bx
 

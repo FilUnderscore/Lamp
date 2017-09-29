@@ -5,6 +5,7 @@ idtr:
 	dd idt
 
 idt:
+
 idt_end:
 
 idt_class:
