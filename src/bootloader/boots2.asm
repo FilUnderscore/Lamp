@@ -64,15 +64,15 @@ boot:
 	; Initialize the GDT (Global Descriptor Table)
 	lgdt [gdt_basic_flat_model_descriptor]
 	; Initialize the IDT (Interrupt Descriptor Table)
-	;lidt [idtr]
+	lidt [idt]
 
 	; Triple Fault when attempting to enter Protected Mode
 	; Must be GDT or IDTR
 	;call mode_protected_enter
-	;mov eax, cr0
-	;or eax, 0x1
-	;mov cr0, eax
-	
+	mov eax, cr0
+	or eax, 0x1
+	mov cr0, eax
+
 	; Setting up registers for 32-bit access.
 	;mov ax, SEG_DS
 	;mov ds, ax
@@ -86,7 +86,7 @@ boot:
 	; long mode and initialize 64-bit mode if supported.
 	;jmp dword SEG_CS:protected_boot
 	;jmp 0x08:protected_boot
-	;jmp CODE_SEGMENT:protected_boot
+	jmp CODE_SEGMENT:protected_boot
 
 BITS 32
 protected_boot:

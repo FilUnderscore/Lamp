@@ -184,7 +184,7 @@ load_sector_2:
 	mov es, bx
 	xor bx, bx
 
-	mov al, 0x04		; Number of sectors to read. (default: 0x01 - 1 sector)
+	mov al, 0x16		; Number of sectors to read. (default: 0x01 - 1 sector)
 						; Each sector is 512 bytes.
 	mov ch, 1
 	mov cl, 2

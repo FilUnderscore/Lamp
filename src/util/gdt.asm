@@ -9,28 +9,28 @@ gdt_basic_flat_model_null_descriptor:
 gdt_basic_flat_model_code_segment_descriptor:
 	dw 0xffff
 
-	dw 0x0
+	dw 0x0000
 
 	db 0x0
 
-	db 10011010b
+	db 0x9a
 
-	db 11001111b
+	db 0xcf
 
-	db 0x0
+	db 0x00
 
 gdt_basic_flat_model_data_segment_descriptor:
 	dw 0xffff
 	
-	dw 0x0
+	dw 0x0000
 	
 	db 0x0
 
-	db 10010010b
+	db 0x92
 
-	db 11001111b
+	db 0xcf
 
-	db 0x0
+	db 0x00
 
 gdt_basic_flat_model_end:
 
