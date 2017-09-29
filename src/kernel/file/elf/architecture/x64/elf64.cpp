@@ -1,5 +1,5 @@
 /*
- * elf_32.cpp
+ * elf_64.cpp
  *
  *  Created on: 30/09/2017
  *      Author: filipjerkovic
