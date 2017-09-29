@@ -2,7 +2,7 @@
  * elf_header_32.h
  *
  *  Created on: 30/09/2017
- *      Author: filipjerkovic
+ *      Author: Filip Jerkovic
  */
 
 #ifndef FILE_ELF_ARCHITECTURE_X32_ELF_HEADER_32_H_

@@ -2,7 +2,7 @@
  * elf_header_32.cpp
  *
  *  Created on: 29/09/2017
- *      Author: filipjerkovic
+ *      Author: Filip Jerkovic
  */
 
 #include <elf_header.h>

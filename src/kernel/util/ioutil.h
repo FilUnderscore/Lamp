@@ -2,7 +2,7 @@
  * ioutil.h
  *
  *  Created on: 29/09/2017
- *      Author: filipjerkovic
+ *      Author: Filip Jerkovic
  */
 
 #ifndef UTIL_IOUTIL_H_

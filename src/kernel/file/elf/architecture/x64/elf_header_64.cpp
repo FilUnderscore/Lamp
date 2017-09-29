@@ -2,7 +2,7 @@
  * elf_header_64.cpp
  *
  *  Created on: 30/09/2017
- *      Author: filipjerkovic
+ *      Author: Filip Jerkovic
  */
 
 #include <elf_header_64.h>
