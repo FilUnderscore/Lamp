@@ -7,11 +7,11 @@
 
 #include <ioutil.h>
 
-namespace util
+namespace sys
 {
-	int memcpy(char* source, char* dest, long sourceOffset, long destOffset, long sourceLength)
+	int memcpy(void* source, void* dest, long sourceOffset, long destOffset, long sourceLength)
 	{
-		char* src;
+		void* src;
 
 		//Insert assertion to make sure that (sourceOffset + sourceLength) don't exceed sourceSize
 
@@ -24,6 +24,15 @@ namespace util
 		for(long sI = sourceOffset; sI < sourceLength; sI++)
 		{
 			src[sI - sourceOffset] = source[sI];
+		}
+
+		/**
+		 * If dest is null or doesn't have an allocated block size,
+		 * allocate the length of the source being copied.
+		 */
+		if(dest == NULL || sizeof(dest) <= 0)
+		{
+			dest = malloc(sourceLength);
 		}
 
 		//Insert assertion to make sure that (destOffset + sourceLength) don't exceed destSize

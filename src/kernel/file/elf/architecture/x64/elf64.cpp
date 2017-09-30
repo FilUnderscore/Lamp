@@ -8,20 +8,36 @@
 #include <elf_64.h>
 #include <elf_header_64.h>
 
+#include <ioutil.h>
+
+using namespace sys;
+
 namespace elf
 {
-	static elf::elf readElf()
+	static elf elf::readElf(void* elf)
 	{
-		elf_64 elf64 = elf_64();
+		elf_64* elf64 = elf_64();
+
+		/*
+		 * Set ELF file data.
+		 */
+
+		elf64->fileData = elf;
+
+	   /*
+		* Set up ELF header.
+		*/
+
+		void* header = malloc(64);
+		memcpy(elf, header, 0, 0, 64);
+		elf64->header = elf_header_64::getElfHeader(header);
 
 		return elf64;
 	}
 
 	elf_header* elf::getHeader()
 	{
-		elf_header_64 elfHeader64 = elf_header_64();
-
-		return elfHeader64;
+		return this->header;
 	}
 
 	elf_64::elf_64()

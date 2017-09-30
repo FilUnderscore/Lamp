@@ -5,28 +5,28 @@
  *      Author: Filip Jerkovic
  */
 
-#include <elf_header.h>
+#include <elf_header_32.h>
 
 #include <ioutil.h>
 
-using namespace util;
+using namespace sys;
 
 namespace elf
 {
-	char* elf_header::getHeader()
+	void* elf_header::getHeader()
 	{
-		char* header;
+		void* header;
 
 		header[0] = this->magicNumber;
 
-		memcpy((char*)this->magicName, header, 0, 1, 3);
+		memcpy(&this->magicName, header, 0, 1, 3);
 
 		header[4] = this->architecture;
 		header[5] = this->endianness;
 		header[6] = this->elfVersion;
 		header[7] = this->osABI;
 
-		memcpy((char*)malloc(8), header, 0, 8, 8);
+		memcpy(malloc(8), header, 0, 8, 8); //Reserved space, unused.
 
 		memcpy(&this->type, header, 0, 16, 2);
 		memcpy(&this->instructionSet, header, 0, 18, 2);
@@ -49,5 +49,43 @@ namespace elf
 		memcpy(this->indexInSectionHeaderTableWithSectionNames, header, 0, 50, 2);
 
 		return header;
+	}
+
+	static elf_header* elf_header::getElfHeader(void* header)
+	{
+		elf_header_32* elfHeader = elf_header_32();
+
+		elfHeader->magicNumber = header[0];
+		memcpy(header, &elfHeader->magicName, 1, 0, 3);
+
+		elfHeader->architecture = header[4];
+		elfHeader->endianness = header[5];
+		elfHeader->elfVersion = header[6];
+		elfHeader->osABI = header[7];
+
+		//Reserved space, unused/padding
+		//bytes [8, 9, 10, 11, 12, 13, 14, 15]
+
+		memcpy(header, elfHeader->type, 16, 0, 2);
+		memcpy(header, elfHeader->instructionSet, 18, 0, 2);
+		memcpy(header, elfHeader->elfVersion2, 20, 0, 3);
+
+		memcpy(header, elfHeader->programEntryPosition, 24, 0, 3);
+
+		memcpy(header, elfHeader->programHeaderTablePosition, 28, 0, 4);
+		memcpy(header, elfHeader->sectionHeaderTablePosition, 32, 0, 4);
+
+		memcpy(header, elfHeader->flags, 36, 0, 3);
+		memcpy(header, elfHeader->headerSize, 40, 0, 2);
+
+		memcpy(header, elfHeader->sizeOfEntryInProgramHeaderTable, 42, 0, 2);
+		memcpy(header, elfHeader->numberOfEntriesInProgramHeaderTable, 44, 0, 2);
+
+		memcpy(header, elfHeader->sizeOfEntryInSectionHeaderTable, 46, 0, 2);
+		memcpy(header, elfHeader->numberOfEntriesInSectionHeaderTable, 48, 0, 2);
+
+		memcpy(header, elfHeader->indexInSectionHeaderTableWithSectionNames, 50, 0, 2);
+
+		return elfHeader;
 	}
 }
