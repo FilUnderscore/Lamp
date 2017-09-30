@@ -10,8 +10,6 @@
 
 #include <ioutil.h>
 
-using namespace sys;
-
 namespace elf
 {
 	static elf elf::readElf(void* elf)
