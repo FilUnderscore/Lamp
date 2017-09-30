@@ -19,14 +19,38 @@ namespace elf
 	class elf
 	{
 	public:
-		static elf readElf();
-
-		virtual elf_header* header;
-
-		virtual elf_header* getHeader();
+		/*
+		 * CONSTRUCTORS
+		 */
 
 		virtual elf();
 		virtual ~elf();
+
+		/*
+		 * VARIABLES
+		 */
+
+		virtual void* fileData;
+
+		virtual elf_header* header;
+
+		/*
+		 * METHODS
+		 */
+
+		/**
+		 * Get the "ELF header" of the file.
+		 *
+		 * @return ELF header instance of the ELF file instance.
+		 */
+		virtual elf_header* getHeader();
+
+		/**
+		 * Read the data of an ELF file.
+		 *
+		 * @return ELF file instance, constructed from the ELF file data.
+		 */
+		static elf readElf(void* elf);
 	};
 } /* namespace elf */
 

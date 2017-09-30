@@ -10,17 +10,27 @@ namespace elf
 	class elf_header
 	{
 	public:
+		/*
+		 * CONSTRUCTORS
+		 */
+		virtual elf_header();
+		virtual ~elf_header();
+
+		/*
+		 * VARIABLES
+		 */
+
 		uint16_t magicNumber; //Always 0x7F
 		string magicName; //Always 'ELF' in ASCII
-		char architecture; //1 = 32 bit, 2 = 64 bit
-		char endianness; //1 = little endian, 2 = big endian
-		char elfVersion; //ELF Version
-		char osABI; //OS ABI - usually 0 for System V
+		void architecture; //1 = 32 bit, 2 = 64 bit
+		void endianness; //1 = little endian, 2 = big endian
+		void elfVersion; //ELF Version
+		void osABI; //OS ABI - usually 0 for System V
 
 		//position 8 -> 15 (unused / padding)
 
-		char type; //1 = relocatable, 2 = executable, 3 = shared, 4 = core
-		char instructionSet; //See table below.
+		void* type; //1 = relocatable, 2 = executable, 3 = shared, 4 = core
+		void* instructionSet; //See table below.
 
 		/**
 		 * Instruction Set Architectures:
@@ -48,30 +58,48 @@ namespace elf
 		 * ------------------------
 		 */
 
-		char* elfVersion2; // ELF Version
-		char* programEntryPosition; // Program entry position
+		void* elfVersion2; // ELF Version
+		void* programEntryPosition; // Program entry position
 
-		char* programHeaderTablePosition; //Program header table position
-		char* sectionHeaderTablePosition; //Section header table position
+		void* programHeaderTablePosition; //Program header table position
+		void* sectionHeaderTablePosition; //Section header table position
 
-		char* flags; //Flags - architecture dependent; see note below.
+		void* flags; //Flags - architecture dependent; see note below.
 
 		/*
 		 * The flags entry can probably be ignored for x86 ELFs, as no flags are actually defined.
 		 */
 
-		char* headerSize; //Header size
+		void* headerSize; //Header size
 
-		char* sizeOfEntryInProgramHeaderTable; //Size of an entry in the program header table
+		void* sizeOfEntryInProgramHeaderTable; //Size of an entry in the program header table
 
-		char* numberOfEntriesInProgramHeaderTable; //Number of entries in the program header table
+		void* numberOfEntriesInProgramHeaderTable; //Number of entries in the program header table
 
-		char* sizeOfEntryInSectionHeaderTable; //Size of an entry in the section header table
+		void* sizeOfEntryInSectionHeaderTable; //Size of an entry in the section header table
 
-		char* numberOfEntriesInSectionHeaderTable; //Number of entries in the section header table
+		void* numberOfEntriesInSectionHeaderTable; //Number of entries in the section header table
 
-		char* indexInSectionHeaderTableWithSectionNames; //Index in section header table with the section names.
+		void* indexInSectionHeaderTableWithSectionNames; //Index in section header table with the section names.
 
-		char* getHeader();
+		/*
+		 *	METHODS
+		 */
+
+		/**
+		 * Read the ELF header instance into a pointer.
+		 *
+		 * @return ELF header data
+		 */
+		virtual void* getHeader();
+
+		/**
+		 * Read the ELF header data into an instance.
+		 *
+		 * @param header ELF header data
+		 *
+		 * @return ELF header instance
+		 */
+		static virtual elf_header* getElfHeader(void* header);
 	};
 }

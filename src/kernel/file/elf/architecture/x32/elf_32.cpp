@@ -8,20 +8,38 @@
 #include <elf_32.h>
 #include <elf_header_32.h>
 
+#include <ioutil.h>
+
+using namespace sys;
+
 namespace elf
 {
-	static elf::elf readElf()
+	static elf elf::readElf(void* elf)
 	{
-		elf_32 elf32 = elf_32();
+		elf_32* elf32 = elf_32();
+
+		/*
+		 * Set ELF file data.
+		 */
+
+		elf32->fileData = elf;
+
+		/*
+		 * Set up ELF header.
+		 */
+
+		void* header = malloc(52);
+		memcpy(elf, header, 0, 0, 52);
+		this->header = elf_header_32::getElfHeader(header);
+
+
 
 		return elf32;
 	}
 
 	elf_header* elf::getHeader()
 	{
-		elf_header_32 elfHeader32 = elf_header_32();
-
-		return elfHeader32;
+		return this->header;
 	}
 
 	elf_32::elf_32()

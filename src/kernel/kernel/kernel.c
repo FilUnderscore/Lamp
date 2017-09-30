@@ -5,6 +5,9 @@
  *      Author: Filip Jerkovic
  */
 
+/**
+ * Initializes 32-bit kernel
+ */
 void k_main(void*)
 {
 	/*

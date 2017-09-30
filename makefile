@@ -28,3 +28,5 @@ BOOT_STAGE_2:
 
 BOOT_STAGE_3:
 	#Small kernel, which will initialize the main 32/64-bit kernel.
+
+KERNEL:

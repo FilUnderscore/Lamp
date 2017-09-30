@@ -12,9 +12,24 @@
 
 using namespace std;
 
-namespace util
+namespace sys
 {
-	int memcpy(char* source, char* dest, long sourceOffset, long destOffset, long sourceLength);
+	/*
+	 * METHODS
+	 */
+
+	/**
+	 * Copy memory from the source to the destination using offsets and length.
+	 *
+	 * @param source Source
+	 * @param dest Destination
+	 * @param sourceOffset Offset from Source
+	 * @param destOffset Offset from Destination
+	 * @param sourceLength Length from Source to Length of Destination
+	 *
+	 * @return 0 if the operation was a success, 1 if the operation failed.
+	 */
+	int memcpy(void* source, void* dest, long sourceOffset, long destOffset, long sourceLength);
 }
 
 #endif /* UTIL_IOUTIL_H_ */
