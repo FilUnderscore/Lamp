@@ -468,7 +468,7 @@ floppy_bootsig_check: disabled=0
 #   log: /dev/tty
 #=======================================================================
 #log: /dev/null
-log: /logs/bochs.out
+log: ./logs/bochs.out
 
 #=======================================================================
 # LOGPREFIX:
@@ -524,7 +524,7 @@ debug: action=ignore
 #=======================================================================
 #debugger_log: /dev/null
 #debugger_log: debugger.out
-debugger_log: /logs/bochs.debug
+debugger_log: ./logs/bochs.debug
 
 #=======================================================================
 # COM1, COM2, COM3, COM4:
@@ -576,7 +576,7 @@ debugger_log: /logs/bochs.debug
 #   parport2: enabled=1, file="/dev/lp0"
 #   parport1: enabled=0
 #=======================================================================
-parport1: enabled=1, file="/logs/parport.out"
+parport1: enabled=1, file="./logs/parport.out"
 
 #=======================================================================
 # SB16:
