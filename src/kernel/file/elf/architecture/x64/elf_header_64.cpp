@@ -9,8 +9,6 @@
 
 #include <ioutil.h>
 
-using namespace sys;
-
 namespace elf
 {
 	void* elf_header::getHeader()
