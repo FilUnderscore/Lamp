@@ -20,19 +20,69 @@ namespace elf
 		 * VARIABLES
 		 */
 
-		uint16_t magicNumber; //Always 0x7F
-		string magicName; //Always 'ELF' in ASCII
-		void architecture; //1 = 32 bit, 2 = 64 bit
-		void endianness; //1 = little endian, 2 = big endian
-		void elfVersion; //ELF Version
-		void osABI; //OS ABI - usually 0 for System V
-
-		//position 8 -> 15 (unused / padding)
-
-		void* type; //1 = relocatable, 2 = executable, 3 = shared, 4 = core
-		void* instructionSet; //See table below.
+		/**
+		 * Always 0x7F
+		 */
+		uint16_t magicNumber;
 
 		/**
+		 * Always 'ELF' in ASCII text
+		 */
+		string magicName;
+
+		/**
+		 * ELF architecture (32/64 bit)
+		 *
+		 * 1 = 32 bit
+		 * 2 = 64 bit
+		 */
+		void architecture;
+
+		/**
+		 * Endianness of the ELF file (reverse order of bytes)
+		 *
+		 * 1 = little endian
+		 * 2 = big endian
+		 */
+		void endianness;
+
+		/**
+		 * ELF version
+		 */
+		void elfVersion;
+
+		/**
+		 * OS ABI
+		 *
+		 * -> usually 0 for System V
+		 */
+		void osABI;
+
+		/*
+		 * Byte Position [8 -> 15] = unused/padding
+		 *
+		 * Should be empty (0x00) bytes.
+		 */
+
+		/**
+		 * Type of ELF
+		 *
+		 * 1 = relocatable
+		 * 2 = executable
+		 * 3 = shared
+		 * 4 = core
+		 *
+		 */
+		void* type;
+
+		/**
+		 * Instruction set that the ELF uses.
+		 *
+		 * See table beneath.
+		 */
+		void* instructionSet;
+
+		/*
 		 * Instruction Set Architectures:
 		 *
 		 * ------------------------
@@ -58,29 +108,67 @@ namespace elf
 		 * ------------------------
 		 */
 
-		void* elfVersion2; // ELF Version
-		void* programEntryPosition; // Program entry position
+		/**
+		 * ELF Version as an array.
+		 */
+		void* elfVersion2;
 
-		void* programHeaderTablePosition; //Program header table position
-		void* sectionHeaderTablePosition; //Section header table position
+		/**
+		 * Program entry position.
+		 */
+		void* programEntryPosition;
 
-		void* flags; //Flags - architecture dependent; see note below.
+		/**
+		 * Program header table position.
+		 */
+		void* programHeaderTablePosition;
+
+		/**
+		 * Section header table position.
+		 */
+		void* sectionHeaderTablePosition;
+
+		/**
+		 * Flags (architecture dependent)
+		 *
+		 * See note beneath.
+		 */
+		void* flags;
 
 		/*
-		 * The flags entry can probably be ignored for x86 ELFs, as no flags are actually defined.
+		 * The flags entry can probably be ignored for x86 ELFs,
+		 * as no flags are actually defined.
 		 */
 
-		void* headerSize; //Header size
+		/**
+		 * Header size
+		 */
+		void* headerSize;
 
-		void* sizeOfEntryInProgramHeaderTable; //Size of an entry in the program header table
+		/**
+		 * Size of an entry in the program header table.
+		 */
+		void* sizeOfEntryInProgramHeaderTable;
 
-		void* numberOfEntriesInProgramHeaderTable; //Number of entries in the program header table
+		/**
+		 * Number of entries in the program header table.
+		 */
+		void* numberOfEntriesInProgramHeaderTable;
 
-		void* sizeOfEntryInSectionHeaderTable; //Size of an entry in the section header table
+		/**
+		 * Size of entry in the section header table.
+		 */
+		void* sizeOfEntryInSectionHeaderTable;
 
-		void* numberOfEntriesInSectionHeaderTable; //Number of entries in the section header table
+		/**
+		 * Number of entries in the section header table.
+		 */
+		void* numberOfEntriesInSectionHeaderTable;
 
-		void* indexInSectionHeaderTableWithSectionNames; //Index in section header table with the section names.
+		/**
+		 * Index in the section header table with section names.
+		 */
+		void* indexInSectionHeaderTableWithSectionNames;
 
 		/*
 		 *	METHODS

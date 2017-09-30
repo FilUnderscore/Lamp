@@ -30,9 +30,17 @@ namespace elf
 		 * VARIABLES
 		 */
 
-		virtual void* fileData;
+		/**
+		 * ELF File Data
+		 *
+		 * Passed in as an array.
+		 */
+		void* fileData;
 
-		virtual elf_header* header;
+		/**
+		 * ELF Header instance
+		 */
+		elf_header* header;
 
 		/*
 		 * METHODS

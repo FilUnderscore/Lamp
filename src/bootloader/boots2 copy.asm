@@ -1,21 +1,17 @@
 bits 16
 
-org 0x00
+push cs
+pop ds
+
+xor ax, ax
+mov ds, ax
 
 jmp start
 
-%include "src/util/a20.asm"
-
 start:
-	mov ax, cs
-	mov ds, ax
-
-	mov ax, 0x0
-	mov es, ax
-
-	call enable_a20_line_16
-
 	cli
+
+	xchg bx, bx
 
 	call gdt_init_16
 
@@ -24,6 +20,8 @@ start:
 	mov eax, cr0
 	or eax, 0x1
 	mov cr0, eax
+
+	xchg bx, bx
 
 	jmp code_16:pmode
 
@@ -41,10 +39,6 @@ pmode:
 
 	hlt
 
-;fetch_raw_descriptor: GDT: index (f) 1 > limit (0)
-
-; Moving location of GDT changes errors??
-[section .data]
 gdt_start_16:
 	dd 0
 	dd 0

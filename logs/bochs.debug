@@ -1,0 +1,12 @@
+Next at t=0
+(0) [0x00000000fffffff0] f000:fff0 (unk. ctxt): jmp far f000:e05b         ; ea5be000f0
+c
+(0) Magic breakpoint
+Next at t=171073153
+(0) [0x00000000000100e9] 1000:00e9 (unk. ctxt): mov eax, cr0              ; 0f20c0
+c
+(0).[171073156] [0x00000000000100f3] 1000:00000000000000f3 (unk. ctxt): jmp far 0008:00f8         ; eaf8000800
+Next at t=171073157
+(0) [0x00000000000100f3] 1000:00000000000000f3 (unk. ctxt): jmp far 0008:00f8         ; eaf8000800
+exit
+(0).[171073157] [0x00000000000100f3] 1000:00000000000000f3 (unk. ctxt): jmp far 0008:00f8         ; eaf8000800
