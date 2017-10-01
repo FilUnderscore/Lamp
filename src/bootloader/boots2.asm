@@ -1,75 +1,81 @@
+;
+; Bootloader Second Stage
+;
+; Called by the first stage, this stage will initialize the third stage,
+; which is a small kernel - which will initialize the 32/64 bit kernel.
+;
+; Before initializing the third stage, A20 line needs to be activated first, then protected mode.
+;
+
 bits 16
 
-org 0x00
+; Must always be 10x the amount of STAGE2_OFFSET found in boots1.asm
+org 0x0500
 
+GLOBAL start
+
+; Jumps to start label
 jmp start
 
+;
+; INCLUDED FILES
+;
+%include "src/util/string.asm"
 %include "src/util/a20.asm"
+%include "src/util/gdt.asm"
 
+; Main label
 start:
+	; Clears the screen from the first stage.
+	call clear_screen_16
+
+	; Moves the cursor to the top-left of the screen.
+	push 0x0000
+	call move_cursor_16
+
+	; Experimental Message [Temporary]
+	mov si, continue_key_press_msg_16
+	call print_string_16
+
+	; Makes sure CS and DS are the same.
 	mov ax, cs
 	mov ds, ax
 
+	; Resets ES
 	mov ax, 0x0
 	mov es, ax
 
+	; Enables A20 line through a series of different checks
 	call enable_a20_line_16
 
+	; Disables interrupts (until we get a functional IDT (Interrupt Descriptor Table))
 	cli
 
-	call gdt_init_16
+	; Resets DS
+	xor ax, ax
+	mov ds, ax
 
-	xchg bx, bx
+	; Sets the GDT (Global Descriptor Table) as found in gdt.asm
+	lgdt [gdt_desc]
 
+	; Enables 32-bit (Protected) mode
 	mov eax, cr0
-	or eax, 0x1
+	or eax, 1
 	mov cr0, eax
 
-	jmp code_16:pmode
-
-	;xchg bx, bx
+	; Jumps to protected_boot which is 32-bit now.
+	jmp code_segment:protected_boot
 
 bits 32
-pmode:
-	;jmp $
-
-	mov ax, data_16
+protected_boot:
+	; Resets the registers/pointers to the data_segment var.
+	mov ax, data_segment
 	mov ds, ax
 	mov ss, ax
 	mov es, ax
-	mov esp, 0xFFFF
 
+	; Sets the stack pointer
+	mov esp, 0x90000
+
+	; Halts the CPU
 	hlt
-
-;fetch_raw_descriptor: GDT: index (f) 1 > limit (0)
-
-; Moving location of GDT changes errors??
-[section .data]
-gdt_start_16:
-	dd 0
-	dd 0
-code_16 equ $-gdt_start_16
-	dw 0xFFFF
-	dw 0
-	db 0
-	db 10011010b
-	db 11001111b
-	db 0
-data_16 equ $-gdt_start_16
-	dw 0xFFFF
-	dw 0
-	db 0
-	db 10010010b
-	db 11001111b
-	db 0
-gdt_table_16:
-	dw gdt_table_16 - gdt_start_16 - 1
-	dd gdt_start_16
-
-gdt_init_16:
-	cli
-	pusha
-	lgdt [gdt_table_16]
-	popa
-	sti
-	ret
