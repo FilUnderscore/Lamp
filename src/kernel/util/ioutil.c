@@ -9,7 +9,7 @@
 
 int memcpy(void* source, void* dest, long sourceOffset, long destOffset, long sourceLength)
 {
-	void* src;
+	void* src = malloc(sourceLength);
 
 	//Insert assertion to make sure that (sourceOffset + sourceLength) don't exceed sourceSize
 
@@ -24,7 +24,7 @@ int memcpy(void* source, void* dest, long sourceOffset, long destOffset, long so
 		src[sI - sourceOffset] = source[sI];
 	}
 
-	/**
+	/*
 	 * If dest is null or doesn't have an allocated block size,
 	 * allocate the length of the source being copied.
 	 */

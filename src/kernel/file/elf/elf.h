@@ -56,6 +56,8 @@ namespace elf
 		/**
 		 * Read the data of an ELF file.
 		 *
+		 * @param elf ELF file data array
+		 *
 		 * @return ELF file instance, constructed from the ELF file data.
 		 */
 		static elf readElf(void* elf);

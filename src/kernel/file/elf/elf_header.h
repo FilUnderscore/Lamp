@@ -5,6 +5,9 @@
 
 using namespace std;
 
+#define ELF_32_HEADER_SIZE 52
+#define ELF_64_HEADER_SIZE 64
+
 namespace elf
 {
 	class elf_header

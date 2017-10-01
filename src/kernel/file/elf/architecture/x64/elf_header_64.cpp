@@ -13,7 +13,7 @@ namespace elf
 {
 	void* elf_header::getHeader()
 	{
-		void* header;
+		void* header = malloc(ELF_64_HEADER_SIZE);
 
 		header[0] = this->magicNumber;
 		memcpy(&this->magicName, header, 0, 1, 3);

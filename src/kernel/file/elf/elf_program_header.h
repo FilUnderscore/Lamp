@@ -8,6 +8,9 @@
 #ifndef FILE_ELF_ELF_PROGRAM_HEADER_H_
 #define FILE_ELF_ELF_PROGRAM_HEADER_H_
 
+#define ELF_32_PROGRAM_HEADER_SIZE 32
+#define ELF_64_PROGRAM_HEADER_SIZE 56
+
 namespace elf
 {
 	class elf_program_header
@@ -84,8 +87,19 @@ namespace elf
 		/*
 		 * METHODS
 		 */
+
+		/**
+		 * Get the ELF program header instance as an array.
+		 */
 		virtual void* getProgramHeader();
 
+		/**
+		 * Create an ELF program header instance from an array.
+		 *
+		 * @param programHeader ELF program header array
+		 *
+		 * @return ELF program header instance
+		 */
 		static virtual elf_program_header* getElfProgramHeader(void* programHeader);
 	};
 }

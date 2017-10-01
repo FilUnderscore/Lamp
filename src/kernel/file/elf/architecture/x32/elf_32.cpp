@@ -26,8 +26,8 @@ namespace elf
 		 * Set up ELF header.
 		 */
 
-		void* header = malloc(52);
-		memcpy(elf, header, 0, 0, 52);
+		void* header = malloc(ELF_32_HEADER_SIZE);
+		memcpy(elf, header, 0, 0, ELF_32_HEADER_SIZE);
 		this->header = elf_header_32::getElfHeader(header);
 
 
