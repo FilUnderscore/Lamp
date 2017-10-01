@@ -9,6 +9,7 @@
 #define ELF_H_
 
 #include <elf_header.h>
+#include <elf_program_header.h>
 
 #include <string>
 
@@ -42,6 +43,11 @@ namespace elf
 		 */
 		elf_header* header;
 
+		/**
+		 * ELF Program Header instance
+		 */
+		elf_program_header* programHeader;
+
 		/*
 		 * METHODS
 		 */
@@ -52,6 +58,13 @@ namespace elf
 		 * @return ELF header instance of the ELF file instance.
 		 */
 		virtual elf_header* getHeader();
+
+		/**
+		 * Get the "ELF program header" of the file.
+		 *
+		 * @return ELF program header instance of the ELF file instance.
+		 */
+		virtual elf_program_header* getProgramHeader();
 
 		/**
 		 * Read the data of an ELF file.
