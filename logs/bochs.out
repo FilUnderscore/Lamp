@@ -31,17 +31,16 @@
 00000000000i[     ]   SB16 support: yes
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0x1195e9000. after alignment, vector=0x1195e9000
+00000000000i[MEM0 ] allocated memory at 0x111c3e000. after alignment, vector=0x111c3e000
 00000000000i[MEM0 ] 512.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=512
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/40448 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Mon Oct  2 00:20:27 2017 (time0=1506856827)
+00000000000i[CMOS ] Setting initial clock to: Mon Oct  2 02:23:23 2017 (time0=1506864203)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
-00000000000i[FDD  ] tried to open '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso' read/write: No such file or directory
-00000000000i[FDD  ] tried to open '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso' read only: No such file or directory
+00000000000i[FDD  ] fd0: '/Users/filipjerkovic/Desktop/Lamp/Lamp/bin/bootloader/boot.iso' ro=0, h=2,t=80,spt=18
 00000000000i[PCI  ] 440FX Host bridge present at device 0, function 0
 00000000000i[PCI  ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[VGA  ] interval=300000
@@ -64,10 +63,12 @@
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
 00000000000i[KBD  ] will paste characters every 1000 keyboard ticks
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] CD on ata0-0: '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso'
-00000000000i[CD1  ] load cdrom with path=/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso
-00000000000e[CD1  ] open cd failed for /Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso: No such file or directory
-00000000000i[HD   ] Could not locate CD-ROM, continuing with media not present
+00000000000i[HD   ] CD on ata0-0: '/Users/filipjerkovic/Desktop/Lamp/Lamp/bin/bootloader/boot.iso'
+00000000000i[CD1  ] load cdrom with path=/Users/filipjerkovic/Desktop/Lamp/Lamp/bin/bootloader/boot.iso
+00000000000i[CD1  ] Opening image file as a cd.
+00000000000i[HD   ] Media present in CD-ROM drive
+00000000000e[CD1  ] expected cdrom image to be a multiple of 2048 bytes
+00000000000i[HD   ] Capacity is 512 sectors (1.00 MB)
 00000000000i[HD   ] Using boot sequence cdrom, floppy, disk
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'serial' plugin device by virtual method
@@ -122,69 +123,70 @@
 00000000000i[     ] Using debugger log file ./logs/bochs.debug
 00000000000i[     ] set SIGINT handler to bx_debug_ctrlc_handler
 00000003305i[BIOS ] $Revision: 1.257 $ $Date: 2011/01/26 09:52:02 $
-00000337574i[KBD  ] reset-disable command received
-00000487284i[VBIOS] VGABios $Id: vgabios.c,v 1.69 2009/04/07 18:18:20 vruppert Exp $
-00000487355i[VGA  ] VBE known Display Interface b0c0
-00000487387i[VGA  ] VBE known Display Interface b0c5
-00000490312i[VBIOS] VBE Bios $Id: vbe.c,v 1.62 2009/01/25 15:46:25 vruppert Exp $
-00000803001i[BIOS ] Starting rombios32
-00000803498i[BIOS ] Shutdown flag 0
-00000804188i[BIOS ] ram_size=0x20000000
-00000804693i[BIOS ] ram_end=512MB
-00001300245i[BIOS ] Found 1 cpu(s)
-00001319232i[BIOS ] bios_table_addr: 0x000fb928 end=0x000fcc00
-00001319335i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
-00001647032i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
-00001974960i[P2I  ] PCI IRQ routing: PIRQA# set to 0x0b
-00001974981i[P2I  ] PCI IRQ routing: PIRQB# set to 0x09
-00001975002i[P2I  ] PCI IRQ routing: PIRQC# set to 0x0b
-00001975023i[P2I  ] PCI IRQ routing: PIRQD# set to 0x09
-00001975033i[P2I  ] write: ELCR2 = 0x0a
-00001975918i[BIOS ] PIIX3/PIIX4 init: elcr=00 0a
-00001983834i[BIOS ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
-00001986396i[BIOS ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
-00001988797i[BIOS ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
-00001989027i[PIDE ] new BM-DMA address: 0xc000
-00001989731i[BIOS ] region 4: 0x0000c000
-00001999060i[BIOS ] MP table addr=0x000fba00 MPC table addr=0x000fb930 size=0xd0
-00002001119i[BIOS ] SMBIOS table addr=0x000fba10
-00002001158i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
-00002002002i[BIOS ] bios_table_cur_addr: 0x000fbb2c
-00005883254i[BIOS ] IDE time out
+00000375057i[KBD  ] reset-disable command received
+00000524805i[VBIOS] VGABios $Id: vgabios.c,v 1.69 2009/04/07 18:18:20 vruppert Exp $
+00000524876i[VGA  ] VBE known Display Interface b0c0
+00000524908i[VGA  ] VBE known Display Interface b0c5
+00000527833i[VBIOS] VBE Bios $Id: vbe.c,v 1.62 2009/01/25 15:46:25 vruppert Exp $
+00000840522i[BIOS ] Starting rombios32
+00000841019i[BIOS ] Shutdown flag 0
+00000841709i[BIOS ] ram_size=0x20000000
+00000842214i[BIOS ] ram_end=512MB
+00001337742i[BIOS ] Found 1 cpu(s)
+00001356729i[BIOS ] bios_table_addr: 0x000fb928 end=0x000fcc00
+00001356832i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
+00001684529i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
+00002012457i[P2I  ] PCI IRQ routing: PIRQA# set to 0x0b
+00002012478i[P2I  ] PCI IRQ routing: PIRQB# set to 0x09
+00002012499i[P2I  ] PCI IRQ routing: PIRQC# set to 0x0b
+00002012520i[P2I  ] PCI IRQ routing: PIRQD# set to 0x09
+00002012530i[P2I  ] write: ELCR2 = 0x0a
+00002013415i[BIOS ] PIIX3/PIIX4 init: elcr=00 0a
+00002021331i[BIOS ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
+00002023893i[BIOS ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
+00002026294i[BIOS ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
+00002026524i[PIDE ] new BM-DMA address: 0xc000
+00002027228i[BIOS ] region 4: 0x0000c000
+00002036557i[BIOS ] MP table addr=0x000fba00 MPC table addr=0x000fb930 size=0xd0
+00002038616i[BIOS ] SMBIOS table addr=0x000fba10
+00002038655i[PCI  ] 440FX PMC write to PAM register 59 (TLB Flush)
+00002039499i[BIOS ] bios_table_cur_addr: 0x000fbb2c
+00005920751i[BIOS ] IDE time out
 00015000000i[XGUI ] charmap update. Font Height is 16
-00156562218e[HD   ] ata0-0: atapi_cmd_error: key=02 asc=3a
-00156565396i[BIOS ] ata_is_ready returned 1
-00156565994e[HD   ] ata0-0: atapi_cmd_error: key=02 asc=3a
-00156590011i[BIOS ] CDROM boot failure code : 0003
-00158245524i[FDD  ] attempt to read/write sector 1 with media not present
-00199081965i[     ] Ctrl-C detected in signal handler.
-00199081966i[     ] dbg: Quit
-00199081966i[CPU0 ] CPU is in real mode (active)
-00199081966i[CPU0 ] CS.d_b = 16 bit
-00199081966i[CPU0 ] SS.d_b = 16 bit
-00199081966i[CPU0 ] EFER   = 0x00000000
-00199081966i[CPU0 ] | RAX=0000000000000040  RBX=0000000000000004
-00199081966i[CPU0 ] | RCX=0000000000000200  RDX=0000000000000000
-00199081966i[CPU0 ] | RSP=000000000000ff8a  RBP=000000000000ff8c
-00199081966i[CPU0 ] | RSI=00000000000e0000  RDI=000000000000f770
-00199081966i[CPU0 ] |  R8=0000000000000000   R9=0000000000000000
-00199081966i[CPU0 ] | R10=0000000000000000  R11=0000000000000000
-00199081966i[CPU0 ] | R12=0000000000000000  R13=0000000000000000
-00199081966i[CPU0 ] | R14=0000000000000000  R15=0000000000000000
-00199081966i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
-00199081966i[CPU0 ] | SEG selector     base    limit G D
-00199081966i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-00199081966i[CPU0 ] |  CS:f000( 0004| 0|  0) 000f0000 0000ffff 0 0
-00199081966i[CPU0 ] |  DS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00199081966i[CPU0 ] |  SS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00199081966i[CPU0 ] |  ES:07c0( 0005| 0|  0) 00007c00 0000ffff 0 0
-00199081966i[CPU0 ] |  FS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00199081966i[CPU0 ] |  GS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00199081966i[CPU0 ] |  MSR_FS_BASE:0000000000000000
-00199081966i[CPU0 ] |  MSR_GS_BASE:0000000000000000
-00199081966i[CPU0 ] | RIP=00000000000005f8 (00000000000005f8)
-00199081966i[CPU0 ] | CR0=0x60000010 CR2=0x0000000000000000
-00199081966i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-00199081966i[CMOS ] Last time is 1506856830 (Mon Oct  2 00:20:30 2017)
-00199081966i[XGUI ] Exit
-00199081966i[CTRL ] quit_sim called with exit code 0
+00156604532i[BIOS ] CDROM boot failure code : 0005
+00158818416i[BIOS ] Booting from 0000:7c00
+00171097419i[CPU0 ] [171097419] Stopped on MAGIC BREAKPOINT
+00171097419i[     ] Ctrl-C detected in signal handler.
+00171097420i[CPU0 ] [171097420] Stopped on MAGIC BREAKPOINT
+00171097421i[CPU0 ] WARNING: HLT instruction with IF=0!
+01088835007i[     ] Ctrl-C detected in signal handler.
+01088835012i[     ] dbg: Quit
+01088835012i[CPU0 ] CPU is in protected mode (halted)
+01088835012i[CPU0 ] CS.d_b = 32 bit
+01088835012i[CPU0 ] SS.d_b = 32 bit
+01088835012i[CPU0 ] EFER   = 0x00000000
+01088835012i[CPU0 ] | RAX=0000000060000010  RBX=0000000000000000
+01088835012i[CPU0 ] | RCX=0000000000000002  RDX=0000000000000000
+01088835012i[CPU0 ] | RSP=0000000000090000  RBP=0000000000090000
+01088835012i[CPU0 ] | RSI=00000000000e0597  RDI=000000000000f786
+01088835012i[CPU0 ] |  R8=0000000000000000   R9=0000000000000000
+01088835012i[CPU0 ] | R10=0000000000000000  R11=0000000000000000
+01088835012i[CPU0 ] | R12=0000000000000000  R13=0000000000000000
+01088835012i[CPU0 ] | R14=0000000000000000  R15=0000000000000000
+01088835012i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af PF cf
+01088835012i[CPU0 ] | SEG selector     base    limit G D
+01088835012i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+01088835012i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+01088835012i[CPU0 ] |  MSR_FS_BASE:0000000000000000
+01088835012i[CPU0 ] |  MSR_GS_BASE:0000000000000000
+01088835012i[CPU0 ] | RIP=000000000000071c (000000000000071c)
+01088835012i[CPU0 ] | CR0=0x60000011 CR2=0x0000000000000000
+01088835012i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
+01088835012i[CMOS ] Last time is 1506864224 (Mon Oct  2 02:23:44 2017)
+01088835012i[XGUI ] Exit
+01088835012i[CTRL ] quit_sim called with exit code 0
