@@ -2,14 +2,7 @@ Next at t=0
 (0) [0x00000000fffffff0] f000:fff0 (unk. ctxt): jmp far f000:e05b         ; ea5be000f0
 c
 (0) Magic breakpoint
-Next at t=171097419
+Next at t=171097412
 (0) [0x0000000000000716] 0008:0000000000000716 (unk. ctxt): xchg bx, bx               ; 6687db
-c
-(0) Magic breakpoint
-Next at t=171097420
-(0) [0x0000000000000719] 0008:0000000000000719 (unk. ctxt): jmp .+0 (0x0000071b)      ; eb00
-c
-Next at t=1088835012
-(0) [0x000000000000071c] 0008:000000000000071c (unk. ctxt): add byte ptr ds:[eax], al ; 0000
 exit
-(0).[1088835012] [0x000000000000071c] 0008:000000000000071c (unk. ctxt): add byte ptr ds:[eax], al ; 0000
+(0).[171097412] [0x0000000000000716] 0008:0000000000000716 (unk. ctxt): xchg bx, bx               ; 6687db
