@@ -93,7 +93,7 @@ org 0x7C00
 ; Real Mode
 ;
 
-STAGE2_OFFSET equ 0x0050
+STAGE2_OFFSET equ 0x1000
 
 GLOBAL start
 
@@ -164,7 +164,7 @@ loader:
 
 %include "src/util/string.asm"
 
-boot_second_stage_msg db "Booting into second stage...", 0
+boot_second_stage_msg db "Booting into second stage.", 0
 
 error_drive_msg db "An error occurred while booting...", 0
 
@@ -212,13 +212,12 @@ load_sector_2:
 
 	retn
 .success:
-		; Prints "Booting into second stage..." on screen (16-bit real mode)
 		mov si, boot_second_stage_msg
 		call print_string_16
 
 		; Jumps to memory location [es:bx] '0x1000:0x0', where the second stage of the bootloader
 		; is located at.
-		jmp STAGE2_OFFSET:0x0
+		jmp 0x1000:0x0
 
 		;
 		; Shouldn't reach this section.

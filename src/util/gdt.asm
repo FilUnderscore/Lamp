@@ -1,43 +1,36 @@
-[bits 16]
+;
+; Global Descriptor Table (GDT)
+;
+; This table tells the CPU where to find certain memory addresses for
+; programs that need them.
+;
+gdt:
 
-gdt_basic_flat_model_start:
+gdt_null:	; null segment
+	dd 0
+	dd 0
 
-gdt_basic_flat_model_null_descriptor:
-	dd 0x0
-	dd 0x0
+gdt_code:
+	dw 0FFFFh
+	dw 0
+	db 0
+	db 10011010b
+	db 11001111b
+	db 0
 
-gdt_basic_flat_model_code_segment_descriptor:
-	dw 0xffff
+gdt_data:
+	dw 0FFFFh
+	dw 0
+	db 0
+	db 10010010b
+	db 11001111b
+	db 0
 
-	dw 0x0000
+gdt_end:
 
-	db 0x0
+gdt_desc:
+	dw gdt_end - gdt - 1
+	dd gdt
 
-	db 0x9a
-
-	db 0xcf
-
-	db 0x00
-
-gdt_basic_flat_model_data_segment_descriptor:
-	dw 0xffff
-	
-	dw 0x0000
-	
-	db 0x0
-
-	db 0x92
-
-	db 0xcf
-
-	db 0x00
-
-gdt_basic_flat_model_end:
-
-gdt_basic_flat_model_descriptor:
-	dw gdt_basic_flat_model_end - gdt_basic_flat_model_start - 1
-
-	dd gdt_basic_flat_model_start
-
-CODE_SEGMENT equ gdt_basic_flat_model_code_segment_descriptor - gdt_basic_flat_model_start
-DATA_SEGMENT equ gdt_basic_flat_model_data_segment_descriptor - gdt_basic_flat_model_start
+code_segment equ gdt_code - gdt
+data_segment equ gdt_data - gdt
