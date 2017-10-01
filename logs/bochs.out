@@ -31,16 +31,17 @@
 00000000000i[     ]   SB16 support: yes
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0x1090c6000. after alignment, vector=0x1090c6000
+00000000000i[MEM0 ] allocated memory at 0x1195e9000. after alignment, vector=0x1195e9000
 00000000000i[MEM0 ] 512.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=512
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/40448 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Sun Oct  1 13:07:44 2017 (time0=1506816464)
+00000000000i[CMOS ] Setting initial clock to: Mon Oct  2 00:20:27 2017 (time0=1506856827)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
-00000000000i[FDD  ] fd0: '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso' ro=0, h=2,t=80,spt=18
+00000000000i[FDD  ] tried to open '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso' read/write: No such file or directory
+00000000000i[FDD  ] tried to open '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso' read only: No such file or directory
 00000000000i[PCI  ] 440FX Host bridge present at device 0, function 0
 00000000000i[PCI  ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[VGA  ] interval=300000
@@ -65,9 +66,8 @@
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
 00000000000i[HD   ] CD on ata0-0: '/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso'
 00000000000i[CD1  ] load cdrom with path=/Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso
-00000000000i[CD1  ] Opening image file as a cd.
-00000000000i[HD   ] Media present in CD-ROM drive
-00000000000i[HD   ] Capacity is 8 sectors (0.02 MB)
+00000000000e[CD1  ] open cd failed for /Users/filipjerkovic/Desktop/Lamp/bin/bootloader/boot.iso: No such file or directory
+00000000000i[HD   ] Could not locate CD-ROM, continuing with media not present
 00000000000i[HD   ] Using boot sequence cdrom, floppy, disk
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'serial' plugin device by virtual method
@@ -152,38 +152,39 @@
 00002002002i[BIOS ] bios_table_cur_addr: 0x000fbb2c
 00005883254i[BIOS ] IDE time out
 00015000000i[XGUI ] charmap update. Font Height is 16
-00156579654e[HD   ] ata0-0: atapi_cmd_error: key=05 asc=21
-00156603671i[BIOS ] CDROM boot failure code : 0003
-00158817555i[BIOS ] Booting from 0000:7c00
-00171096841i[CPU0 ] WARNING: HLT instruction with IF=0!
-01173450822i[     ] Ctrl-C detected in signal handler.
-01173450832i[     ] dbg: Quit
-01173450832i[CPU0 ] CPU is in protected mode (halted)
-01173450832i[CPU0 ] CS.d_b = 32 bit
-01173450832i[CPU0 ] SS.d_b = 32 bit
-01173450832i[CPU0 ] EFER   = 0x00000000
-01173450832i[CPU0 ] | RAX=0000000060000010  RBX=0000000000000000
-01173450832i[CPU0 ] | RCX=0000000000000002  RDX=0000000000000000
-01173450832i[CPU0 ] | RSP=0000000000090000  RBP=0000000000009000
-01173450832i[CPU0 ] | RSI=00000000000e0597  RDI=000000000000f770
-01173450832i[CPU0 ] |  R8=0000000000000000   R9=0000000000000000
-01173450832i[CPU0 ] | R10=0000000000000000  R11=0000000000000000
-01173450832i[CPU0 ] | R12=0000000000000000  R13=0000000000000000
-01173450832i[CPU0 ] | R14=0000000000000000  R15=0000000000000000
-01173450832i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af PF cf
-01173450832i[CPU0 ] | SEG selector     base    limit G D
-01173450832i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-01173450832i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-01173450832i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-01173450832i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-01173450832i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-01173450832i[CPU0 ] |  FS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-01173450832i[CPU0 ] |  GS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-01173450832i[CPU0 ] |  MSR_FS_BASE:0000000000000000
-01173450832i[CPU0 ] |  MSR_GS_BASE:0000000000000000
-01173450832i[CPU0 ] | RIP=00000000000006e9 (00000000000006e9)
-01173450832i[CPU0 ] | CR0=0x60000011 CR2=0x0000000000000000
-01173450832i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-01173450832i[CMOS ] Last time is 1506816487 (Sun Oct  1 13:08:07 2017)
-01173450832i[XGUI ] Exit
-01173450832i[CTRL ] quit_sim called with exit code 0
+00156562218e[HD   ] ata0-0: atapi_cmd_error: key=02 asc=3a
+00156565396i[BIOS ] ata_is_ready returned 1
+00156565994e[HD   ] ata0-0: atapi_cmd_error: key=02 asc=3a
+00156590011i[BIOS ] CDROM boot failure code : 0003
+00158245524i[FDD  ] attempt to read/write sector 1 with media not present
+00199081965i[     ] Ctrl-C detected in signal handler.
+00199081966i[     ] dbg: Quit
+00199081966i[CPU0 ] CPU is in real mode (active)
+00199081966i[CPU0 ] CS.d_b = 16 bit
+00199081966i[CPU0 ] SS.d_b = 16 bit
+00199081966i[CPU0 ] EFER   = 0x00000000
+00199081966i[CPU0 ] | RAX=0000000000000040  RBX=0000000000000004
+00199081966i[CPU0 ] | RCX=0000000000000200  RDX=0000000000000000
+00199081966i[CPU0 ] | RSP=000000000000ff8a  RBP=000000000000ff8c
+00199081966i[CPU0 ] | RSI=00000000000e0000  RDI=000000000000f770
+00199081966i[CPU0 ] |  R8=0000000000000000   R9=0000000000000000
+00199081966i[CPU0 ] | R10=0000000000000000  R11=0000000000000000
+00199081966i[CPU0 ] | R12=0000000000000000  R13=0000000000000000
+00199081966i[CPU0 ] | R14=0000000000000000  R15=0000000000000000
+00199081966i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
+00199081966i[CPU0 ] | SEG selector     base    limit G D
+00199081966i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+00199081966i[CPU0 ] |  CS:f000( 0004| 0|  0) 000f0000 0000ffff 0 0
+00199081966i[CPU0 ] |  DS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
+00199081966i[CPU0 ] |  SS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
+00199081966i[CPU0 ] |  ES:07c0( 0005| 0|  0) 00007c00 0000ffff 0 0
+00199081966i[CPU0 ] |  FS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
+00199081966i[CPU0 ] |  GS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
+00199081966i[CPU0 ] |  MSR_FS_BASE:0000000000000000
+00199081966i[CPU0 ] |  MSR_GS_BASE:0000000000000000
+00199081966i[CPU0 ] | RIP=00000000000005f8 (00000000000005f8)
+00199081966i[CPU0 ] | CR0=0x60000010 CR2=0x0000000000000000
+00199081966i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
+00199081966i[CMOS ] Last time is 1506856830 (Mon Oct  2 00:20:30 2017)
+00199081966i[XGUI ] Exit
+00199081966i[CTRL ] quit_sim called with exit code 0

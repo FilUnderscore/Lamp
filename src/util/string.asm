@@ -1,4 +1,9 @@
+; Make sure that we don't call the label beneath by mistake.
 jmp string_class
+
+;
+; 16-bit (Real Mode) String labels
+;
 
 print_line_16:
 	pusha
@@ -110,4 +115,31 @@ HEX_OUT_16: db '0x0000', 0
 
 continue_key_press_msg_16 db "Press any key to continue...", 0
 
+;
+; 32 bit (Protected Mode) String Labels
+;
+
+VIDEO_MEMORY_32 equ 0xb8000
+WHITE_ON_BLACK_32 equ 0x0F ; Color byte for each character
+
+print_string_32:
+	pusha
+	mov edx, VIDEO_MEMORY_32
+.PrintStr32Loop:
+	mov al, [ebx] ; [ebx] is the address of the current character
+	mov ah, WHITE_ON_BLACK_32
+
+	cmp al, 0 ; check if it is the end of the string
+	je .PrintStr32Done
+
+	mov [edx], ax ; store character + attribute in video memory
+	add ebx, 1 ; next character
+	add edx, 2 ; next video memory position
+
+	jmp .PrintStr32Loop
+.PrintStr32Done:
+	popa
+	ret
+
+; Empty Label
 string_class:

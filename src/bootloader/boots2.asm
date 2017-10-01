@@ -23,6 +23,7 @@ jmp start
 %include "src/util/string.asm"
 %include "src/util/a20.asm"
 %include "src/util/gdt.asm"
+%include "src/util/idt.asm"
 
 ; Main label
 start:
@@ -73,9 +74,23 @@ protected_boot:
 	mov ds, ax
 	mov ss, ax
 	mov es, ax
+	mov fs, ax
+	mov gs, ax
 
-	; Sets the stack pointer
-	mov esp, 0x90000
+	; Sets the stack pointer right at the top of the free space of memory
+	mov ebp, 0x90000
+	mov esp, ebp
 
-	; Halts the CPU
-	hlt
+	xchg bx, bx
+
+	;lidt [empty_idt]
+
+	xchg bx, bx
+
+	; Re-enables Interrupts after a valid IDT (Interrupt Descriptor Table) has been set.
+	;sti
+
+	jmp protected_load
+
+; Includes 3rd stage of bootloader, instead of linking through memory addresses.
+%include "src/bootloader/boots3.asm"

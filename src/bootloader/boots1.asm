@@ -93,15 +93,57 @@ org 0x7C00
 ; Real Mode
 ;
 
-STAGE2_OFFSET equ 0x0050
+[section .data]
+
+;
+; LFS Bootsector Data
+;
+
+VOLUME_NAME_LENGTH db 0x0B			; Volume Name Length
+VOLUME_NAME db "Local Drive"		; Volume Name
+
+VOLUME_TYPE_LENGTH db 0x03			; Volume Type Length
+VOLUME_TYPE db "LFS"				; LFS (Lamp File System)
+
+;VOLUME_SECTOR_SIZE_LENGTH db 0x04	; Volume Sector Size Length
+VOLUME_SECTOR_SIZE dd 0x00000200    ; Volume Sector Size
+
+;VOLUME_SECTORS_PER_TRACK_LENGTH db 0x04	; Volume Sectors Per Track Length
+VOLUME_SECTORS_PER_TRACK dd 0x00000020  ; Volume Sectors Per Track
+
+;VOLUME_CYLINDERS_LENGTH db 0x04			; Volume Cylinders Count Length
+VOLUME_CYLINDERS dd 0x00000200 			; Volume Cylinders Count
+
+;VOLUME_HEADS_LENGTH db 0x04				; Volume Head Count Length
+VOLUME_HEADS dd 0x00000100 				; Volume Head Count
+
+;VOLUME_MAXCAPACITY_LENGTH db 0x04		; Volume Max Capacity Length
+;VOLUME_MAXCAPACITY dd 0x80000000		; Max Capacity (in bits) (2GB or 2,147,483,648 bytes)
+
+; MaxCapacity = (sector size) x (sectors per track) x (cylinders) x (heads)
+
+;VOLUME_FILETABLE_LENGTH db 0x04
+VOLUME_FILETABLE db 0x00100000		; Volume File Table	(at 1MB)								; Volume File Table 
+									; Memory Address
+
+;VOLUME_PARTITIONS_LENGTH db 0x04
+VOLUME_PARTITIONS dd 0x00000000		; Volume Partition List Information
+
+;VOLUME_VERSION_LENGTH db 0x04
+VOLUME_VERSION dd 0x00000001		; Volume Version
 
 GLOBAL start
+; Jump to beginning of bootloader
+jmp start
 
-[section .data]
+;
+; VARIABLES
+;
+stage2_offset equ 0x0050			; Location of the second stage offset, located in the three-stage bootloader.
+boot_disk db 0						; Set by BIOS
+
 start:
 	jmp 0x0000:loader
-
-bootdisk db 0
 
 loader:
 	
@@ -120,7 +162,7 @@ loader:
 	; Clear Direction Flag
 	cld
 
-	mov [bootdisk], dl
+	mov [boot_disk], dl
 
 	;
 	; Start new screen
@@ -130,16 +172,16 @@ loader:
 	;
 	; Set Cursor Position to Top-Left of screen, (Column: 0, Row: 0)
 	;
-	push 0x0000
-	call move_cursor_16
+	;push 0x0000
+	;call move_cursor_16
 
 	; Used for Debugging
 	;mov si, msg
 	;call PrintString
 	;call PrintLine
 
-	xor ax, ax 			; Return conventional memory size
-	int 0x12
+	;xor ax, ax 			; Return conventional memory size
+	;int 0x12
 
 	; Begins loading of sector 2 (second stage of bootloader)
 	call load_sector_2
@@ -180,7 +222,7 @@ load_sector_2:
 
 	; '0x1000' destination of data load
 
-	mov bx, STAGE2_OFFSET
+	mov bx, stage2_offset
 	mov es, bx
 	xor bx, bx
 
@@ -191,7 +233,7 @@ load_sector_2:
 
 	mov cx, 0x0002 		; cylinder 0, track 2
 
-	mov dl, [bootdisk]	; Boot Drive
+	mov dl, [boot_disk]	; Boot Drive
 
 	xor dh, dh 			; Head 0
 
@@ -218,7 +260,7 @@ load_sector_2:
 
 		; Jumps to memory location [es:bx] '0x1000:0x0', where the second stage of the bootloader
 		; is located at.
-		jmp STAGE2_OFFSET:0x0
+		jmp stage2_offset:0x0
 
 		;
 		; Shouldn't reach this section.

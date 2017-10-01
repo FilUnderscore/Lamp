@@ -20,13 +20,10 @@ BOOT_STAGE_1:
 	@echo "\nAssembled boot stage 1. Can be found in bin directory.\n"
 
 BOOT_STAGE_2:
-	@echo "\nBeginning boot stage 2 assembly and link to kernel.\n"
+	@echo "\nBeginning boot stage 2 assembly.\n"
 
 	$(asm) -f bin src/bootloader/boots2.asm -o bin/bootloader/boots2.bin
 
 	@echo "\nAssembled boot stage 2. Can be found in bin directory.\n"
-
-BOOT_STAGE_3:
-	#Small kernel, which will initialize the main 32/64-bit kernel.
 
 KERNEL:

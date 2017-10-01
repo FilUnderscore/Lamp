@@ -1,5 +1,5 @@
 /*
- * kernel.c
+ * kernel.cpp
  *
  *  Created on: 30/09/2017
  *      Author: Filip Jerkovic
