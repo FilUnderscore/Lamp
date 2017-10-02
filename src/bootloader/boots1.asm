@@ -103,22 +103,22 @@ GLOBAL start
 ; Jump to beginning of bootloader
 jmp start
 
-VOLUME_NAME_LENGTH db 0x0B			; Volume Name Length
+VOLUME_NAME_LENGTH dd 0x0000000B			; Volume Name Length
 VOLUME_NAME db "Local Drive"		; Volume Name
 
-VOLUME_TYPE_LENGTH db 0x03			; Volume Type Length
+VOLUME_TYPE_LENGTH dd 0x00000003			; Volume Type Length
 VOLUME_TYPE db "LFS"				; LFS (Lamp File System)
 
-VOLUME_SECTOR_SIZE_LENGTH db 0x04	; Volume Sector Size Length
+;VOLUME_SECTOR_SIZE_LENGTH db 0x04	; Volume Sector Size Length
 VOLUME_SECTOR_SIZE dd 0x00000200    ; Volume Sector Size
 
-VOLUME_SECTORS_PER_TRACK_LENGTH db 0x04	; Volume Sectors Per Track Length
+;VOLUME_SECTORS_PER_TRACK_LENGTH db 0x04	; Volume Sectors Per Track Length
 VOLUME_SECTORS_PER_TRACK dd 0x00000020  ; Volume Sectors Per Track
 
-VOLUME_CYLINDERS_LENGTH db 0x04			; Volume Cylinders Count Length
+;VOLUME_CYLINDERS_LENGTH db 0x04			; Volume Cylinders Count Length
 VOLUME_CYLINDERS dd 0x00000200 			; Volume Cylinders Count
 
-VOLUME_HEADS_LENGTH db 0x04				; Volume Head Count Length
+;VOLUME_HEADS_LENGTH db 0x04				; Volume Head Count Length
 VOLUME_HEADS dd 0x00000100 				; Volume Head Count
 
 ;VOLUME_MAXCAPACITY_LENGTH db 0x04		; Volume Max Capacity Length
@@ -126,21 +126,15 @@ VOLUME_HEADS dd 0x00000100 				; Volume Head Count
 
 ; MaxCapacity = (sector size) x (sectors per track) x (cylinders) x (heads)
 
-VOLUME_FILETABLE_LENGTH db 0x04
+;VOLUME_FILETABLE_LENGTH db 0x04
 VOLUME_FILETABLE dd 0x00100000		; Volume File Table	(at 1MB)								; Volume File Table 
 									; Memory Address
 
-VOLUME_PARTITIONS_LENGTH db 0x04
+;VOLUME_PARTITIONS_LENGTH db 0x04
 VOLUME_PARTITIONS dd 0x00000000		; Volume Partition List Information
 
-VOLUME_VERSION_LENGTH db 0x04
+;VOLUME_VERSION_LENGTH db 0x04
 VOLUME_VERSION dd 0x00000001		; Volume Version
-
-;
-; VARIABLES
-;
-stage2_offset equ 0x0050			; Location of the second stage offset, located in the three-stage bootloader.
-boot_disk db 0						; Set by BIOS
 
 start:
 	jmp 0x0000:loader
@@ -273,6 +267,13 @@ load_sector_2:
 		jmp halt
 
 %include "src/util/halt.asm"
+
+;
+; VARIABLES
+;
+stage2_offset equ 0x0050			; Location of the second stage offset, located in the three-stage bootloader.
+boot_disk equ 0						; Set by BIOS
+
 
 ;
 ; BIOS Interrupt 13h (INT) Function 0x02 - Reading Sectors
