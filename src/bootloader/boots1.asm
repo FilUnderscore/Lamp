@@ -96,45 +96,65 @@ org 0x7C00
 [section .data]
 
 ;
-; LFS Bootsector Data
+; LFS Bootsector Header Start
 ;
 
-GLOBAL start
+
+;
+; Bootstrap code area (part 1) -- START
+;
+
+
 ; Jump to beginning of bootloader
 jmp start
 
-VOLUME_NAME_LENGTH dd 0x0000000B			; Volume Name Length
-VOLUME_NAME db "Local Drive"		; Volume Name
+; Volume Name
+;VOLUME_NAME_LENGTH dd 0x0000000B			; Volume Name Length
+;VOLUME_NAME db "Local Drive"		; Volume Name
 
-VOLUME_TYPE_LENGTH dd 0x00000003			; Volume Type Length
-VOLUME_TYPE db "LFS"				; LFS (Lamp File System)
+; Volume File Type
+;VOLUME_TYPE_LENGTH dd 0x00000003			; Volume Type Length
+;VOLUME_TYPE db "LFS"				; LFS (Lamp File System)
 
+; Volume Sector Size
 ;VOLUME_SECTOR_SIZE_LENGTH db 0x04	; Volume Sector Size Length
-VOLUME_SECTOR_SIZE dd 0x00000200    ; Volume Sector Size
+;VOLUME_SECTOR_SIZE dd 0x00000200    ; Volume Sector Size
 
+; Volume No. Sectors Per Track
 ;VOLUME_SECTORS_PER_TRACK_LENGTH db 0x04	; Volume Sectors Per Track Length
-VOLUME_SECTORS_PER_TRACK dd 0x00000020  ; Volume Sectors Per Track
+;VOLUME_SECTORS_PER_TRACK dd 0x00000020  ; Volume Sectors Per Track
 
+; Volume No. Cylinders
 ;VOLUME_CYLINDERS_LENGTH db 0x04			; Volume Cylinders Count Length
-VOLUME_CYLINDERS dd 0x00000200 			; Volume Cylinders Count
+;VOLUME_CYLINDERS dd 0x00000200 			; Volume Cylinders Count
 
+; Volumes No. Heads
 ;VOLUME_HEADS_LENGTH db 0x04				; Volume Head Count Length
-VOLUME_HEADS dd 0x00000100 				; Volume Head Count
+;VOLUME_HEADS dd 0x00000100 				; Volume Head Count
 
 ;VOLUME_MAXCAPACITY_LENGTH db 0x04		; Volume Max Capacity Length
 ;VOLUME_MAXCAPACITY dd 0x80000000		; Max Capacity (in bits) (2GB or 2,147,483,648 bytes)
 
+;
 ; MaxCapacity = (sector size) x (sectors per track) x (cylinders) x (heads)
+;
 
+; Volume File Table Memory Address (for LFS)
 ;VOLUME_FILETABLE_LENGTH db 0x04
-VOLUME_FILETABLE dd 0x00100000		; Volume File Table	(at 1MB)								; Volume File Table 
+;VOLUME_FILETABLE dd 0x00100000		; Volume File Table	(at 1MB)								; Volume File Table 
 									; Memory Address
 
+; Volume Partition Count
 ;VOLUME_PARTITIONS_LENGTH db 0x04
-VOLUME_PARTITIONS dd 0x00000000		; Volume Partition List Information
+;VOLUME_PARTITIONS dd 0x00000000		; Volume Partition List Information
 
+; Volume Version
 ;VOLUME_VERSION_LENGTH db 0x04
-VOLUME_VERSION dd 0x00000001		; Volume Version
+;VOLUME_VERSION dd 0x00000001		; Volume Version
+
+;
+; LFS Bootsector Header End
+;
 
 start:
 	jmp 0x0000:loader
@@ -153,34 +173,14 @@ loader:
 	mov sp, bp
 	sti
 
-	; Clear Direction Flag
+	; Clear Direction Flag for String printing (positive)
 	cld
 
 	mov [boot_disk], dl
 
-	;
-	; Start new screen
-	;
-	call clear_screen_16
-
-	;
-	; Set Cursor Position to Top-Left of screen, (Column: 0, Row: 0)
-	;
-	;push 0x0000
-	;call move_cursor_16
-
-	; Used for Debugging
-	;mov si, msg
-	;call PrintString
-	;call PrintLine
-
-	;xor ax, ax 			; Return conventional memory size
-	;int 0x12
-
 	; Begins loading of sector 2 (second stage of bootloader)
 	call load_sector_2
 
-%include "src/util/read.asm"
 
 ; 
 ; BIOS Interrupt 13h (INT) Function 0 - Reset Disk Drive
@@ -197,82 +197,6 @@ loader:
 ; CF (Carry Flag) is clear if the operation is successful,
 ; if it is set, the operation failed.
 ;
-
-%include "src/util/string.asm"
-
-boot_second_stage_msg db "Booting into second stage...", 0
-
-error_drive_msg db "An error occurred while booting...", 0
-
-load_sector_2:
-	; Never mistake bx for ax. Otherwise the memory of the second sector won't be copied.
-	;
-	; If written as
-	; mov ax, 0x1000
-	; mov es, ax
-	; xor bx, bx
-	;
-	; The code will not be read.
-
-	; '0x1000' destination of data load
-
-	mov bx, stage2_offset
-	mov es, bx
-	xor bx, bx
-
-	mov al, 0x16		; Number of sectors to read. (default: 0x01 - 1 sector)
-						; Each sector is 512 bytes.
-	mov ch, 1
-	mov cl, 2
-
-	mov cx, 0x0002 		; cylinder 0, track 2
-
-	mov dl, [boot_disk]	; Boot Drive
-
-	xor dh, dh 			; Head 0
-
-	; Read sectors (INT 13h / AH = 02h)
-	call read_sectors_16
-	jnc .success 		; Jump if no carry flag.
-	
-	;
-	; If the sectors were failed to be read, an error will be printed to the screen.
-	;
-
-	mov si, error_drive_msg
-	call print_string_16
-
-	; Print Error Code (hexadecimal)
-	mov dl, ah
-	call print_hex_16
-
-	retn
-.success:
-		; Prints "Booting into second stage..." on screen (16-bit real mode)
-		mov si, boot_second_stage_msg
-		call print_string_16
-
-		; Jumps to memory location [es:bx] '0x1000:0x0', where the second stage of the bootloader
-		; is located at.
-		jmp stage2_offset:0x0
-
-		;
-		; Shouldn't reach this section.
-		;
-
-		call print_line_16
-		mov si, error_drive_msg
-		call print_string_16
-
-		jmp halt
-
-%include "src/util/halt.asm"
-
-;
-; VARIABLES
-;
-stage2_offset equ 0x0050			; Location of the second stage offset, located in the three-stage bootloader.
-boot_disk equ 0						; Set by BIOS
 
 
 ;
@@ -342,7 +266,138 @@ boot_disk equ 0						; Set by BIOS
 ; Drive Number 7 usually represents a hard disk drive.
 ;
 
+load_sector_2:
+	; Never mistake bx for ax. Otherwise the memory of the second sector won't be copied.
+	;
+	; If written as
+	; mov ax, 0x1000
+	; mov es, ax
+	; xor bx, bx
+	;
+	; The code will not be read.
+
+	; '0x1000' destination of data load
+
+	mov bx, stage2_offset
+	mov es, bx
+	xor bx, bx
+
+	mov al, 0x16		; Number of sectors to read. (default: 0x01 - 1 sector)
+						; Each sector is 512 bytes.
+	mov ch, 1
+	mov cl, 2
+
+	mov cx, 0x0002 		; cylinder 0, track 2
+
+	mov dl, [boot_disk]	; Boot Drive
+
+	xor dh, dh 			; Head 0
+
+	; Read sectors (INT 13h / AH = 02h)
+	call read_sectors_16
+	jnc .Success 		; Jump if no carry flag.
+	
+	;
+	; If the sectors were failed to be read, an error will be printed to the screen.
+	;
+
+	mov si, error_drive_msg
+	call print_string_16
+
+	; Print Error Code (hexadecimal)
+	mov dl, ah
+	call print_hex_16
+
+	retn
+.Success:
+		; Prints "Booting into second stage..." on screen (16-bit real mode)
+		;mov si, boot_second_stage_msg
+		;call print_string_16
+
+		; Jumps to memory location [es:bx] '0x1000:0x0', where the second stage of the bootloader
+		; is located at.
+		jmp stage2_offset:0x0
+
+		;
+		; Shouldn't reach this section.
+		;
+
+		call print_line_16
+		mov si, error_drive_msg
+		call print_string_16
+
+		jmp $
+
+
+boot_second_stage_msg db "Booting into second stage...", 0
+
+error_drive_msg db "An error occurred while booting...", 0
+
+;
+; Bootstrap code area (part 1) -- END
+;
+times 218 - ($ - $$) db 0
+
+
+;
+; Disk timestamp
+;
+
+
+;
+; Bootstrap code area (part 2) -- START
+;
+
+%include "src/util/read.asm"
+
+%include "src/util/string_16.asm"
+
+;
+; VARIABLES
+;
+stage2_offset equ 0x0050			; Location of the second stage offset, located in the three-stage bootloader.
+boot_disk equ 0						; Set by BIOS
+
+
 ; Support LFS
+
+;
+; Bootsector code area (part 2) -- END
+;
+times 440 - ($ - $$) db 0
+
+;
+; GPT Entries (Main Paritions 1 - 4)
+;
+; Each entry is 16 bytes long.
+;
+
+
+
+; Partition entry #1 -> (Address: +1BEh / +446)
+
+
+
+
+
+; Partition entry #2 -> (Address: +1CEh / +462)
+
+
+
+
+
+
+; Partition entry #3 -> (Address: +1DEh / +478)
+
+
+
+
+
+
+; Partition entry #4 -> (Address: +1EEh / +494)
+
+
+
 
 ; Pad the rest of the file with zeros through to byte 510.
 times 510 - ($ - $$)  db 0
