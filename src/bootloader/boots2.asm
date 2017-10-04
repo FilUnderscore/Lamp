@@ -90,7 +90,5 @@ protected_boot:
 	; Re-enables Interrupts after a valid IDT (Interrupt Descriptor Table) has been set.
 	;sti
 
-	jmp protected_load
-
-; Includes 3rd stage of bootloader, instead of linking through memory addresses.
-%include "src/bootloader/boots3.asm"
+	; Jumps to boot stage 3
+	jmp 0x20000:0x0008

@@ -6,9 +6,18 @@
 
 bits 32
 
-protected_load:
-	hlt
+;[section .text]
 
-filesystem_info:
+extern bkmain
+global start
+start:
+	lea esp, [sys_stack]
+	call bkmain
 
-system_load:
+;[section .bss]
+;	buff resb 0x1000
+
+sys_stack:
+
+;[section .data]
+;	sec_id: db "DATA SECTION", 0

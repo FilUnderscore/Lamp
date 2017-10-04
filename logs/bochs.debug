@@ -1,8 +1,14 @@
 Next at t=0
 (0) [0x00000000fffffff0] f000:fff0 (unk. ctxt): jmp far f000:e05b         ; ea5be000f0
-c
-(0) Magic breakpoint
-Next at t=171097412
-(0) [0x0000000000000716] 0008:0000000000000716 (unk. ctxt): xchg bx, bx               ; 6687db
-exit
-(0).[171097412] [0x0000000000000716] 0008:0000000000000716 (unk. ctxt): xchg bx, bx               ; 6687db
+<bochs:1> c
+bx_dbg_read_linear: physical memory read error (phy=0x0000000068000020, lin=0x0000000068000020)
+Next at t=165551091
+bx_dbg_read_linear: physical memory read error (phy=0x0000000068000020, lin=0x0000000068000020)
+<bochs:2> info gdt
+Global Descriptor Table (base=0x00000000000006a7, limit=23):
+GDT[0x00]=??? descriptor hi=0x00000000, lo=0x00000000
+GDT[0x01]=Code segment, base=0x00000000, limit=0xffffffff, Execute/Read, Non-Conforming, Accessed, 32-bit
+GDT[0x02]=Data segment, base=0x00000000, limit=0xffffffff, Read/Write, Accessed
+You can list individual entries with 'info gdt [NUM]' or groups with 'info gdt [NUM] [NUM]'
+<bochs:3> exit
+bx_dbg_read_linear: physical memory read error (phy=0x0000000068000020, lin=0x0000000068000020)
