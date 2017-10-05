@@ -1,0 +1,16 @@
+# Ignore macOS .DS_STORE files.
+.DS_STORE
+
+# Ignore sublime files.
+*.sublime-project
+*.sublime-workspace
+/logs/
+
+# Ignore eclipse project files.
+.project
+.cproject
+.settings
+
+
+# Ignore bochs configuration.
+.bochsrc
