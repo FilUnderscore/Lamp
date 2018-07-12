@@ -40,7 +40,7 @@ $(BUILD_DIR)/$(TARGET_DIST): $(OBJ)
 	$(dd) if="kernel.bin" of=$@ seek=1 conv=notrunc
 
 $(OBJ_DIR)/%.o: %
-	@if [ $(suffix $<) = '.c' ]; then $(gcc) -c $< -o $@ -ffreestanding -nostdlib -nostdinc -fno-builtin -fno-stack-protector -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall -Wextra -Werror; fi;
+	@if [ $(suffix $<) = '.c' ]; then $(gcc) -c $< -o $@ -ffreestanding -nostdlib -nostdinc -fno-builtin -fno-stack-protector -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall -Wextra -Werror -Wno-unused-parameter $(INC_FLAGS); fi;
 	@if [ $(suffix $<) = '.asm' ]; then $(asm) -f elf64 $< -o $@; fi;
 #ifeq ($(suffix $<), .cpp)
 #	$(gcc) -c $< -o $@ -ffreestanding -nostdlib -nostdinc -fno-builtin -fno-stack-protector -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -Wall -Wextra -Werror

@@ -5,6 +5,7 @@
  *      Author: Filip Jerkovic
  */
 
+#include <vga.h>
 /**
  * Initializes 32-bit kernel
  */
@@ -20,8 +21,7 @@ int main (void)
 	 *
 	 */
 
-   volatile char* vga = (volatile char*) 0xb8000;
-   *vga = 'K';
+  // __asm__ volatile ("mov %cr4, %eax; bts $5, %eax; mov %eax, %cr4");
 
    return 0;
 }
