@@ -1,0 +1,8 @@
+# Ignore the following files.
+*.bin
+*.o
+
+# Ignore the following folders.
+bin/
+obj/
+logs/
