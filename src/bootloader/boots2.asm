@@ -10,10 +10,9 @@
 bits 16
 
 ; Must always be 10x the amount of STAGE2_OFFSET found in boots1.asm
-org 0x0500
+;org 0x0500
 
 GLOBAL start
-
 ; Jumps to start label
 jmp start
 
