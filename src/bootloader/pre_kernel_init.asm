@@ -19,9 +19,9 @@ jmp start
 ;
 ; INCLUDED FILES
 ;
-%include "src/util/string.asm"
-%include "src/util/a20.asm"
-%include "src/util/gdt.asm"
+%include "include/util/string.asm"
+%include "include/util/a20.asm"
+%include "include/util/gdt.asm"
 
 ; Main label
 start:
@@ -72,9 +72,14 @@ protected_boot:
 	mov ds, ax
 	mov ss, ax
 	mov es, ax
+	mov fs, ax
+	mov gs, ax
 
 	; Sets the stack pointer
 	mov esp, 0x90000
+
+	extern main
+	call main
 
 	; Halts the CPU
 	hlt

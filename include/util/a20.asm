@@ -64,14 +64,14 @@ check_a20_exit:
 ;
 check_a20_line_32:
 	pushad
-	
+
 	mov edi, 0x112345	; odd megabyte address
 	mov esi, 0x012345	; even megabyte address
-	
+
 	mov [esi], esi		; making sure that both addresses contain different values
 	mov [edi], edi		; (if A20 line is cleared, the two pointers would point to
 						; the address 0x012345 that would contain 0x112345 (edit))
-	
+
 	cmpsd 				; Compare addresses to see if they're equivalent
 
 	popad
@@ -166,6 +166,6 @@ enable_a20_line_16:
 .Done:
 	retn
 
-%include "src/util/reboot.asm"
+%include "include/util/reboot.asm"
 
 a20_class:

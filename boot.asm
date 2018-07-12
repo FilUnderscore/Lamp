@@ -29,7 +29,7 @@ org 0x7C00
 
 ;
 ; Absolute (Exact) Memory Address = (Segment Address * 16(decimal)) + Offset
-; 
+;
 ; We use '* 16' because we are in real mode which is 16 bit.
 ;
 ; Example: 07C0:0000 	< 07C0 is the segment, and 0 is the offset.
@@ -58,7 +58,7 @@ org 0x7C00
 
 ;
 ; 5 different processor modes
-; 
+;
 ; Protected Mode
 ;
 ; - 32 bit processor mode, allows 32 bit registers and access of up to
@@ -104,7 +104,7 @@ start:
 bootdisk db 0
 
 loader:
-	
+
 	; Initialize registers (AX, DS, ES)
 	xor ax, ax
 	mov ds, ax
@@ -144,9 +144,9 @@ loader:
 	; Begins loading of sector 2 (second stage of bootloader)
 	call load_sector_2
 
-%include "src/util/read.asm"
+%include "include/util/read.asm"
 
-; 
+;
 ; BIOS Interrupt 13h (INT) Function 0 - Reset Disk Drive
 ;
 ; Parameters
@@ -162,7 +162,7 @@ loader:
 ; if it is set, the operation failed.
 ;
 
-%include "src/util/string.asm"
+%include "include/util/string.asm"
 
 boot_second_stage_msg db "Booting into second stage...", 0
 
@@ -198,7 +198,7 @@ load_sector_2:
 	; Read sectors (INT 13h / AH = 02h)
 	call read_sectors_16
 	jnc .success 		; Jump if no carry flag.
-	
+
 	;
 	; If the sectors were failed to be read, an error will be printed to the screen.
 	;
@@ -230,7 +230,7 @@ load_sector_2:
 
 		jmp halt
 
-%include "src/util/halt.asm"
+%include "include/util/halt.asm"
 
 ;
 ; BIOS Interrupt 13h (INT) Function 0x02 - Reading Sectors
@@ -263,7 +263,7 @@ load_sector_2:
 ; - Each track is usually divided into 512 byte sectors.
 ;   On floppies, there are 18 sectors per track.
 ;
-; - A cylinder is a group of tracks with the same radius 
+; - A cylinder is a group of tracks with the same radius
 ;
 ; - Floppy disks have two heads
 ;
@@ -288,7 +288,7 @@ load_sector_2:
 ;
 ; If the DH parameter is greater than 2, the floppy controller will
 ; generate an exception, because the head does not exist.
-; 
+;
 ; Because there is no handler for the exception, the CPU will generate
 ; a second fault exception, which leads to a Triple Fault. (hard system reboot)
 ;

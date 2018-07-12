@@ -8,7 +8,7 @@
 /**
  * Initializes 32-bit kernel
  */
-void main(void)
+int main (void)
 {
 	/*
 	 * Kernel will be initialized in 32-bit protected mode.
@@ -19,4 +19,9 @@ void main(void)
 	 * - Detect if the CPU is 64-bit, if it is - enable 64-bit long mode.
 	 *
 	 */
+
+   volatile char* vga = (volatile char*) 0xb8000;
+   *vga = 'K';
+
+   return 0;
 }
